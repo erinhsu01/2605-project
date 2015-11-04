@@ -123,6 +123,18 @@ public class Vector {
     }
 
     /**
+     * Converts this vector into a matrix
+     * @return a matrix representation of this vector
+     */
+    public Matrix toMatrix() {
+        double[][] m = new double[size][1];
+        for (int i = 0; i < size; i++) {
+            m[i][0] = contents[i];
+        }
+        return new Matrix(m);
+    }
+
+    /**
      * toString method
      * examples:
      * <> for an empty vector
@@ -139,5 +151,13 @@ public class Vector {
         }
         s += contents[size - 1] + ">";
         return s;
+    }
+
+    /**
+     * Gets the size of this vector
+     * @return number of elements (size) of this vector
+     */
+    public int getSize() {
+        return size;
     }
 }
