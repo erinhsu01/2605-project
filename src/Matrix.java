@@ -3,18 +3,21 @@ public class Matrix {
     private final int cols;
     private final double[][] elements;
 
+    /**
+     * Creates a matrix with 0 rows and columns
+     */
     public Matrix() {
         this(0, 0);
     }
 
     /**
-     * Creates an empty 2D matrix
+     * Creates a 2D matrix of all zeroes
      * @param height the number of arrays within the encompassing array
      * @param width the number of elements in each sub-array
      */
     public Matrix(int height, int width) {
         if (height < 0 || width < 0) {
-            throw new RuntimeException("Matrix dimensions must be >= 0");
+            throw new RuntimeException("Matrix dimensions must be > 0");
         }
         this.rows = height;
         this.cols = width;
@@ -32,6 +35,19 @@ public class Matrix {
         for (int i = 0; i < rows; i++)
             for (int j = 0; j < cols; j++)
                     this.elements[i][j] = elements[i][j];
+    }
+
+    /**
+     * Creates the identity matrix
+     * @param n number of rows and columns
+     * @return identity matrix
+     */
+    public static Matrix identityMatrix(int n) {
+        double[][] id = new double[n][n];
+        for (int i = 0; i < n; i++) {
+            id[i][i] = 1;
+        }
+        return new Matrix(id);
     }
 
     /**

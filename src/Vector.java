@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 public class Vector {
 
     private final int size;
@@ -154,10 +156,33 @@ public class Vector {
     }
 
     /**
+     * Equals method (mostly for the sake of testing)
+     * @param o object comparing this vector to
+     * @return if this vector's contents = o's contents
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || !(o instanceof Vector)) {
+            return false;
+        }
+        Vector m = ((Vector) o);
+        return Arrays.equals(this.contents, m.getContents());
+    }
+
+    /**
      * Gets the size of this vector
      * @return number of elements (size) of this vector
      */
     public int getSize() {
         return size;
+    }
+
+    /**
+     * Gets the backing array of this vector's contents
+     * Private because it's only used for testing
+     * @return double array of this vector's contents
+     */
+    private double[] getContents() {
+        return contents;
     }
 }
