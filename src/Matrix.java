@@ -148,6 +148,22 @@ public class Matrix {
     }
 
     /**
+     * Gets the number of rows
+     * @return the number of rows in the matrix
+     */
+    public int getRows() {
+        return rows;
+    }
+
+    /**
+     * Calculates the trace of this matrix
+     * @return the number of columns in the matrix
+     */
+    public int getCols() {
+        return cols;
+    }
+
+    /**
      * toString method
      *
      * examples:
