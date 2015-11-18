@@ -1,4 +1,5 @@
 import java.util.Arrays;
+import java.util.Random;
 
 public class Matrix {
     private final int rows;
@@ -24,6 +25,29 @@ public class Matrix {
         this.rows = height;
         this.cols = width;
         elements = new double[height][width];
+    }
+
+    /**
+     * Creates a random matrix with of a given size. Each element in the
+     * matrix falls within [lowerBound, upperBound]
+     * @param height number of rows in the matrix
+     * @param width number of columns in the matrix
+     * @param lowerBound lowest number of the range for the randomly
+     *                   generated elements
+     * @param upperBound highest number of the range for the randomly
+     *                   generated elements
+     */
+    public Matrix(int height, int width, double lowerBound, double upperBound) {
+        rows = height;
+        cols = width;
+        elements = new double[rows][cols];
+        Random r = new Random();
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                elements[i][j] = lowerBound +
+                        (r.nextDouble() * (upperBound - lowerBound));
+            }
+        }
     }
 
     /**
