@@ -1,3 +1,6 @@
+import java.util.Arrays;
+import java.util.Random;
+
 public class Matrix {
     private final int rows;
     private final int cols;
@@ -25,12 +28,39 @@ public class Matrix {
     }
 
     /**
+     * Creates a random matrix with of a given size. Each element in the
+     * matrix falls within [lowerBound, upperBound]
+     * @param height number of rows in the matrix
+     * @param width number of columns in the matrix
+     * @param lowerBound lowest number of the range for the randomly
+     *                   generated elements
+     * @param upperBound highest number of the range for the randomly
+     *                   generated elements
+     */
+    public Matrix(int height, int width, double lowerBound, double upperBound) {
+        rows = height;
+        cols = width;
+        elements = new double[rows][cols];
+        Random r = new Random();
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                elements[i][j] = lowerBound +
+                        (r.nextDouble() * (upperBound - lowerBound));
+            }
+        }
+    }
+
+    /**
      * Creates a 2D matrix from a given 2D array
      * @param elements 2D matrix to copy elements from
      */
     public Matrix(double[][] elements) {
         this.rows = elements.length;
-        this.cols = elements[0].length;
+        if (rows != 0) {
+            this.cols = elements[0].length;
+        } else {
+            cols = 0;
+        }
         this.elements = new double[rows][cols];
         for (int i = 0; i < rows; i++)
             for (int j = 0; j < cols; j++)
@@ -188,14 +218,35 @@ public class Matrix {
             if (i == 0) {
                 m += "[";
             } else {
-                m += " [";
+                m += " ["; // extra space here
             }
             for (int j = 0; j < cols - 1; j++) {
                 m += elements[i][j] + "  ";
             }
-            m += elements[i][cols - 1] + "]\n";
+            if (cols - 1 >= 0) {
+                m += elements[i][cols - 1] + "]\n";
+            } else {
+                m += "]";
+            }
         }
         m += "]";
         return m;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || !(o instanceof Matrix)) {
+            return false;
+        }
+        Matrix m = ((Matrix) o);
+        return Arrays.deepEquals(this.elements, m.getElements());
+    }
+
+    /**
+     * Private getter mostly for testing
+     * @return this matrix's 2D array of doubles
+     */
+    private double[][] getElements() {
+        return elements;
     }
 }

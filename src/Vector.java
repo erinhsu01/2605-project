@@ -1,4 +1,5 @@
 import java.util.Arrays;
+import java.util.Random;
 
 public class Vector {
 
@@ -19,6 +20,25 @@ public class Vector {
     public Vector(int size) {
         this.size = size;
         contents = new double[size];
+    }
+
+    /**
+     * Creates a random vector of a given size. Each element in the
+     * vector falls within [lowerBound, upperBound]
+     * @param size number of elements in the vector
+     * @param lowerBound lowest possible number of the range for the
+     *                   randomly generated elements
+     * @param upperBound highest possible number of the range for
+     *                   the randomly generated elements
+     */
+    public Vector(int size, double lowerBound, double upperBound) {
+        this.size = size;
+        contents = new double[size];
+        Random r = new Random();
+        for (int i = 0; i < size; i++) {
+            contents[i] = lowerBound +
+                    (r.nextDouble() * (upperBound - lowerBound));
+        }
     }
 
     /**
@@ -165,8 +185,8 @@ public class Vector {
         if (o == null || !(o instanceof Vector)) {
             return false;
         }
-        Vector m = ((Vector) o);
-        return Arrays.equals(this.contents, m.getContents());
+        Vector v = ((Vector) o);
+        return Arrays.equals(this.contents, v.getContents());
     }
 
     /**
