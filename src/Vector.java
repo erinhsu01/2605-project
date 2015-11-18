@@ -165,8 +165,8 @@ public class Vector {
         if (o == null || !(o instanceof Vector)) {
             return false;
         }
-        Vector m = ((Vector) o);
-        return Arrays.equals(this.contents, m.getContents());
+        Vector v = ((Vector) o);
+        return Arrays.equals(this.contents, v.getContents());
     }
 
     /**

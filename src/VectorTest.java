@@ -1,3 +1,11 @@
+/**
+ * junit tests for Vector
+ * Currently has:
+ * 2 errors because of floating point arithmetic
+ *
+ * Should be fine if rounded within 12 places from the decimal
+ */
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -67,7 +75,50 @@ public class VectorTest {
 
     @Test
     public void testUnitVector() throws Exception {
+        expectedExceptionMessage = "Vector has no direction";
+        String actualExceptionMessage = null;
 
+        // testing unit vector of <>
+        try {
+            v1.unitVector();
+        } catch (Exception e) {
+            actualExceptionMessage = e.getMessage();
+        }
+        assertEquals("Unit vector for empty vector fails",
+                expectedExceptionMessage, actualExceptionMessage);
+
+        actualExceptionMessage = null;
+
+        // testing unit vector of <0, 0, 0, 0>
+        try {
+            v2.unitVector();
+        } catch (Exception e) {
+            actualExceptionMessage = e.getMessage();
+        }
+        assertEquals("Unit vector for zero vector fails",
+                expectedExceptionMessage, actualExceptionMessage);
+
+        // testing unit vector of <1, 2, 3, 4>
+        double[] exp1 = {
+                (1.0 / Math.sqrt(30.0)),
+                Math.sqrt(2.0 / 15),
+                Math.sqrt(3.0 / 10),
+                (2 * Math.sqrt(2.0 / 15))
+        };
+        expectedVector = new Vector(exp1);
+        assertEquals("Unit vector method fails", expectedVector,
+                v3.unitVector());
+
+        // testing unit vector of <1.5, -2.5, 3.75, 4.25>
+        double[] exp2 = {
+                0.235339362165487830464,
+                -0.39223227027581305077,
+                0.588348405413719576,
+                0.6667948594688821863
+        };
+        expectedVector = new Vector(exp2);
+        assertEquals("Unit vector method fails", expectedVector,
+                v4.unitVector());
     }
 
     @Test
@@ -148,6 +199,22 @@ public class VectorTest {
 
     @Test
     public void testToMatrix() throws Exception {
+        Matrix expectedMatrix;
 
+        // testing <> to matrix
+        expectedMatrix = new Matrix();
+        assertEquals("Converting empty vector to matrix fails",
+                expectedMatrix, v1.toMatrix());
+
+        // testing <0, 0, 0, 0> to matrix
+        expectedMatrix = new Matrix(4, 1);
+        assertEquals("Converting zero vector to matrix fails",
+                expectedMatrix, v2.toMatrix());
+
+        // testing <1.5, -2.5, 3.75, 4.25> to matrix
+        double[][] exp = {{1.5}, {-2.5}, {3.75}, {4.25}};
+        expectedMatrix = new Matrix(exp);
+        assertEquals("Converting vector to matrix fails",
+                expectedMatrix, v4.toMatrix());
     }
 }
