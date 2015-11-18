@@ -2,9 +2,12 @@ import java.util.Arrays;
 import java.util.Random;
 
 public class Vector {
-
     private final int size;
     private double[] contents;
+
+
+
+    // ---------------------- BEGIN CONSTRUCTORS ----------------------
 
     /**
      * Creates a Vector of size 0
@@ -52,6 +55,12 @@ public class Vector {
             this.contents[i] = contents[i];
         }
     }
+
+    // ---------------------- END CONSTRUCTORS ----------------------
+
+
+
+    // -------------------- BEGIN BASIC METHODS ---------------------
 
     /**
      * Finds the dot product of this vector and another vector v
@@ -143,6 +152,12 @@ public class Vector {
         }
         return t;
     }
+
+    // -------------------- END BASIC METHODS ---------------------
+
+
+
+    // ------------------ BEGIN TESTING METHODS -------------------
 
     /**
      * Converts this vector into a matrix
