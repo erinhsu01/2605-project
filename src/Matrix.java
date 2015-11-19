@@ -291,140 +291,6 @@ public class Matrix {
         return sum;
     }
 
-    /**
-     * Iteratively calculates a solution using Jacobi iteration for a
-     * specific matrix A and vector b in part 2 of the project.
-     * Will continue to iterate until the calculated solution is within
-     * epsilon or if the number of iterations exceeds M.
-     * @param x0 initial solution vector
-     * @param epsilon a positive number that determines when solution
-     *                is close enough
-     * @param m positive int that indicates max. number of times to iterate
-     *          before quitting
-     * @return a Pair of data: the final solution within epsilon, and
-     *                         number of iterations taken to reach the solution
-     */
-    public static Pair<Vector, Integer> jacobi_iter(Vector x0, double epsilon, int m) {
-        double[][] a = {
-                {1.0, 0.5, (1.0 / 3)},
-                {0.5, 1.0, 0.25},
-                {(1.0 / 3), 0.25, 1.0}
-        };
-        double[] b = {0.1, 0.1, 0.1};
-        return jacobi_iter(new Matrix(a), new Vector(b), x0, epsilon, m);
-    }
-
-    /**
-     * Iteratively calculates a solution using Jacobi iteration for a
-     * given matrix A and vector b.
-     * Will continue to iterate until the calculated solution is within
-     * epsilon or if the number of iterations exceeds M.
-     * @param x0 initial solution vector
-     * @param epsilon a positive number that determines when solution
-     *                is close enough
-     * @param m positive int that indicates max. number of times to iterate
-     *          before quitting
-     * @return a Pair of data: the final solution within epsilon, and
-     *                         number of iterations taken to reach the solution
-     */
-    public static Pair<Vector, Integer> jacobi_iter(Matrix a, Vector b, Vector x0,
-                                             double epsilon, int m) {
-        double e = Math.abs(epsilon);
-        int M = Math.abs(m);
-
-        // S for Jacobi is just the diagonal along A
-        Matrix S = a.D();
-
-        // Inverse for the diagonal matrix S
-        double[][] sInverse = new double[S.getRows()][S.getCols()];
-        for (int i = 0; i < sInverse[0].length; i++) {
-            sInverse[i][i] = 1.0 / S.getElements()[i][i];
-        }
-        Matrix SInverse = new Matrix(sInverse);
-
-        // L + U
-        Matrix LPlusU = Matrix.add(a.L(), a.U());
-
-        return jacobi_helper(SInverse, LPlusU, x0, b, 0, M, e);
-    }
-
-    private static Pair<Vector, Integer> jacobi_helper(Matrix SInverse,
-                                                       Matrix LPlusU, Vector xk,
-                                                       Vector b, int m,
-                                                       int M, double epsilon) {
-        // continue iterating
-        // x_(k+1) = S-inverse * (-(L+U)*x_k + b)
-        Matrix minusLPlusU = LPlusU.times(-1);
-        Matrix minusLPlusUTimesxk = minusLPlusU.times(xk);
-        Matrix first = minusLPlusUTimesxk.plus(b.toMatrix());
-        Matrix x_kPlus1 = SInverse.times(first);
-        m++;
-
-        // successfully found a solution within epsilon
-        // magnitude of (x_(k+1) - x_k) <= epsilon
-        Vector v = x_kPlus1.toVector();
-        if ((x_kPlus1.toVector().minus(xk)).magnitude() <= epsilon) {
-            return new Pair<>(x_kPlus1.toVector(), m);
-        }
-
-        // failed to find a solution within M iterations
-        if (m >= M) {
-            return new Pair<>(xk, m);
-        }
-
-        return jacobi_helper(SInverse, LPlusU, x_kPlus1.toVector(), b, m, M, epsilon);
-    }
-
-    /**
-     * Iteratively calculates a solution using Gauss-Seidel iteration for a
-     * specific matrix A and vector b in part 2 of the project.
-     * Will continue to iterate until the calculated solution is within
-     * epsilon or if the number of iterations exceeds M.
-     * @param x0 initial solution vector
-     * @param epsilon a positive number that determines when solution
-     *                is close enough
-     * @param m positive int that indicates max. number of times to iterate
-     *          before quitting
-     * @return a Pair of data: the final solution within epsilon, and
-     *                         number of iterations taken to reach the solution
-     */
-    public static Pair<Vector, Integer> gs_iter(Vector x0, double epsilon, int m) {
-        double[][] a = {
-                {1.0, 0.5, (1.0 / 3)},
-                {0.5, 1.0, 0.25},
-                {(1.0 / 3), 0.25, 1.0}
-        };
-        double[] b = {0.1, 0.1, 0.1};
-        return gs_iter(new Matrix(a), new Vector(b), x0, epsilon, m);
-    }
-
-    /**
-     * Iteratively calculates a solution using Gauss-Seidel iteration for a
-     * given matrix A and vector b.
-     * Will continue to iterate until the calculated solution is within
-     * epsilon or if the number of iterations exceeds M.
-     * @param x0 initial solution vector
-     * @param epsilon a positive number that determines when solution
-     *                is close enough
-     * @param m positive int that indicates max. number of times to iterate
-     *          before quitting
-     * @return a Pair of data: the final solution within epsilon, and
-     *                         number of iterations taken to reach the solution
-     */
-    public static Pair<Vector, Integer> gs_iter(Matrix a, Vector b, Vector x0,
-                                         double epsilon, int m) {
-        double e = Math.abs(epsilon);
-        int M = Math.abs(m);
-
-        // S for Gauss-Seidel is the diagonal along A plus its lower triangular
-        // matrix
-        Matrix S = Matrix.add(a.D(), a.L());
-
-
-        // TODO
-        return new Pair<>(x0, M);
-    }
-
     // ------------------- END COMPLEX METHODS --------------------
 
 
@@ -497,11 +363,29 @@ public class Matrix {
     }
 
     /**
-     * Private getter mostly for testing
-     * @return this matrix's 2D array of doubles
+     * Gets a copy of this matrix's elements
+     * @return a copy of this matrix's 2D array of doubles
      */
-    private double[][] getElements() {
-        return elements;
+    public double[][] getElements() {
+        double[][] copy = new double[rows][];
+        for (int i = 0; i < rows; i++) {
+            copy[i] = Arrays.copyOf(elements[i], elements[i].length);
+        }
+        return copy;
+    }
+
+    /**
+     * Gets the element at the given row and column location
+     * @param r row index
+     * @param c column index
+     * @return the double at the given row and column index
+     */
+    public double getElement(int r, int c) {
+        if (r < 0 || r >= rows || c < 0 || c >= cols) {
+            throw new java.lang.IllegalArgumentException("Given location " +
+                    "does not exist within this matrix.");
+        }
+        return elements[r][c];
     }
 
     /**
