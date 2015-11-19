@@ -132,7 +132,7 @@ public class Vector {
     }
 
     /**
-     * Subtracts another vector from this vecot
+     * Subtracts another vector from this vector
      * @param v other vector
      * @return this - v
      */
@@ -213,11 +213,14 @@ public class Vector {
     }
 
     /**
-     * Gets the backing array of this vector's contents
-     * Private because it's only used for testing
-     * @return double array of this vector's contents
+     * Gets a copy of this vector's elements
+     * @return a copy of this vector's 2D array of doubles
      */
-    private double[] getContents() {
-        return contents;
+    public double[] getContents() {
+        double[] copy = new double[size];
+        for (int i = 0; i < contents.length; i++) {
+            copy[i] = contents[i];
+        }
+        return copy;
     }
 }
