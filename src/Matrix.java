@@ -291,6 +291,51 @@ public class Matrix {
         return sum;
     }
 
+    /**
+     * Calculates the determinant of this matrix
+     * @param m a matrix to find the determinant of
+     * @return the determinant of this matrix
+     */
+    public double determinant(Matrix m) {
+        if (m.getRows() != m.getCols()) {
+            throw new IllegalArgumentException("The matrix msut be square.");
+        }
+        double[][] mData = m.getElements();
+        return determinant(mData);
+    }
+
+    /**
+     * method to recursively find the determinant
+     * @param data a 2D array to find the determinant of
+     * @return the determinant of this 2D array
+     */
+    private double determinant(double[][] data) {
+        if (data.length == 1) {
+            return data[0][0];
+        }
+        double det = 0;
+        int mult;
+        for (int i = 0; i < data.length; i++) {
+            double[][] submatrix = new double[data.length - 1][data.length - 1];
+            for (int j = 1; j < data.length; j++) {
+                for (int k = 0; k < data.length; k++) {
+                    if (k < i) {
+                        submatrix[j - 1][k] = data[j][k];
+                    } else if (k > i) {
+                        submatrix[j - 1][k - 1] = data[j][k];
+                    }
+                }
+            }
+            if (i % 2 == 0) {
+                mult = 1;
+            } else {
+                mult = -1;
+            }
+            det += mult * data[0][i] * determinant(submatrix);
+        }
+        return det;
+    }
+
     // ------------------- END COMPLEX METHODS --------------------
 
 
