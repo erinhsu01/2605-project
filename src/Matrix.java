@@ -388,7 +388,7 @@ public class Matrix {
             for (int j = 0; j < cols - 1; j++) {
                 m += elements[i][j] + "  ";
             }
-            if (cols - 1 >= 0) {
+            if (rows - i > 1) {
                 m += elements[i][cols - 1] + "]\n";
             } else {
                 m += "]";
@@ -454,10 +454,10 @@ public class Matrix {
             }
             return new Vector(v);
         } else if (rows == 1) {
-            double[] v = new double[cols];
-            for (int i = 0; i < cols; i++) {
-                v[i] = elements[0][i];
-            }
+//            double[] v = new double[cols];
+//            for (int i = 0; i < cols; i++) {
+//                v[i] = elements[0][i];
+//            }
             return new Vector(elements[0]);
         } else {
             throw new java.lang.IllegalArgumentException("Cannot turn this" +
