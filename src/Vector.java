@@ -223,4 +223,12 @@ public class Vector {
         }
         return copy;
     }
+
+    public double getContent(int i) {
+        if (i < 0 || i > size) {
+            throw new java.lang.IllegalArgumentException("Index does not exist");
+        } else {
+            return contents[i];
+        }
+    }
 }
