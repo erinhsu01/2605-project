@@ -385,13 +385,15 @@ public class Matrix {
             } else {
                 m += " ["; // extra space here
             }
-            for (int j = 0; j < cols - 1; j++) {
-                m += elements[i][j] + "  ";
-            }
-            if (rows - i > 1) {
-                m += elements[i][cols - 1] + "]\n";
-            } else {
-                m += "]";
+            for (int j = 0; j < cols; j++) {
+                // last element of a row
+                if (cols - j != 1) {
+                    m += elements[i][j] + "  ";
+                } else if (cols - j == 1 && rows - i != 1) {
+                    m += elements[i][j] + "]\n"; // new line
+                } else {
+                    m += elements[i][j] + "]";
+                }
             }
         }
         m += "]";
