@@ -286,7 +286,7 @@ public class Matrix {
     public double trace() {
         double sum = 0;
         for (int i = 0; i < rows; i++) {
-            sum += this.elements[i][i];
+            sum += elements[i][i];
         }
         return sum;
     }
@@ -334,6 +334,35 @@ public class Matrix {
             det += mult * data[0][i] * determinant(submatrix);
         }
         return det;
+    }
+
+    public Matrix inverse2x2() {
+        if (getRows() != 2 || getCols() != 2) {
+            throw new IllegalArgumentException("This is not a 2x2 square matrix.");
+        }
+        if (determinant(this) == 0) {
+            return null;
+        }
+        //Create inverse matrix's bacckign array and add data
+        double[][] inverseData = new double[2][2];
+        double temp = elements[0][0];
+        inverseData[0][0] = elements[1][1];
+        inverseData[1][1] = temp;
+        inverseData[0][1] = elements[0][1] * -1;
+        inverseData[1][0] = elements[1][0] * -1;
+
+        // Coefficient of inverse is 1 / (ad-bc)
+        double coefficient = 1 / ((elements[0][0] * elements[1][1]) -
+            (elements[0][1] * elements[1][0]));
+
+        //Multiply each element by the coefficient
+        for (int i = 0; i < 2; i++) {
+            for (int j = 0; j < 2; j++) {
+                inverseData[i][j] = inverseData[i][j] * coefficient;
+            }
+        }
+        Matrix inverse = new Matrix(inverseData);
+        return inverse;
     }
 
     // ------------------- END COMPLEX METHODS --------------------
