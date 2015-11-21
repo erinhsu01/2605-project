@@ -6,32 +6,37 @@ public class Substitution
     public static void main(String[] args) {
         // for testing purposes
 //        double[][] upperT = {
-//                {1, -3, 1},
-//                {0, -2, 6},
-//                {0, 0, -54}
+//                {1, 1, 1, 1},
+//                {0, 1, 2, 3},
+//                {0, 0, 1, 3},
+//                {0, 0, 0, 1}
 //        };
-//        Matrix matrix = new Matrix(upperT);
+//        Matrix U = new Matrix(upperT);
 //
 //        double[][] lowerT = {
-//                {3, 0, 0, 0},
-//                {-1, 1, 0, 0},
-//                {3, -2, -1, 0},
-//                {1, -2, 6, 2}
+//                {1, 0, 0, 0},
+//                {1, 1, 0, 0},
+//                {1, 2, 1, 0},
+//                {1, 3, 3, 1}
 //        };
-//        Matrix matrix1 = new Matrix(lowerT);
-//        double[][] b1 = {{5}, {6}, {4}, {2}};
-//        double[][] b2 = {{4}, {-10}, {108}};
+//        Matrix L = new Matrix(lowerT);
+//
+//        // solve Ly = b using forward substitution
+//        double[][] b1 = {{1}, {0.5}, {1.0/3}, {0.25}};
+////        double[][] b2 = {{4}, {-10}, {108}};
 //        Matrix bVector1 = new Matrix(b1);
-//        Matrix bVector = forwardSubstitution(matrix1, bVector1);
+//        Matrix bVector = forwardSubstitution(L, bVector1);
 //        System.out.println(bVector);
 //
-//        double[][] exp = {{3}, {-1}, {2}};
+//        // expected answer
+//        double[][] exp = {{2.08333}, {-1.91667}, {1.08333}, {-0.25}};
 //        Matrix expected = new Matrix(exp);
-//
-//        Matrix backSub = backwardSubstitution(matrix, bVector);
-//        Matrix forwardSub = forwardSubstitution(matrix, bVector);
-//
 //        System.out.println(expected);
+//
+//        // Solve Ux = y using backward substitution
+//        Matrix backSub = backwardSubstitution(U, bVector);
+////        Matrix forwardSub = forwardSubstitution(matrix, bVector);
+//
 //        System.out.println(backSub);
     }
 
@@ -46,7 +51,7 @@ public class Substitution
 		double solutionValue = 0.0;
 		
 		//This loop iterates through the entirety of the input coefficient matrix, but only cares to evaluate the diagonal terms.
-        solutionVector[0][0] = constantCopy[0][0] / coefficientCopy[0][0];
+//        solutionVector[0][0] = constantCopy[0][0] / coefficientCopy[0][0];
         for (int i = 0; i < coefficientMatrix.getRows(); i++) {
             if (coefficientCopy[i][i] != 0) {
                 for (int j = 0; j < i; j++) {
@@ -89,26 +94,36 @@ public class Substitution
     public static Matrix backwardSubstitution(Matrix upperTriangle, Matrix constantMatrix)
     {
     	//This result will hold a 1 width by original matrix's height matrix, which is the vector solution
-        double[][] result = new double[upperTriangle.getCols()][1];
-        for(int i = upperTriangle.getRows() - 1; i >= 0; i--)
-        {
-        	//Because this evaluates upper triangle matrices, the diagonal pivots are used to process the other upper values, being the triangle's i by i values.
-            double x = constantMatrix.getElement(i, 0) / upperTriangle.getElement(i, i);
-            double subtractionValue;
-            
-            //These loops iterate through the upper triangle matrix from the bottom to the top, because the goal of backward substitution
-            //is to solve an upper triangle matrix, meaning the bottom row has a trivial solution: the corresponding constant/the coefficient = solution
-            for(int j = 0; j < upperTriangle.getCols(); j++)
-            {
-            	//These conditionals verify a diagonal value isn't being simplified
-            	if(i != j)
-                {
-            		subtractionValue = (result[j][0]* upperTriangle.getElement(i, j) / upperTriangle.getElement(i, i));
-                    x -= subtractionValue;
-                }
+        double[][] result = new double[upperTriangle.getRows()][1];
+
+        double sum = 0;
+        for (int i = upperTriangle.getRows() - 1; i >= 0; i--) {
+            for (int j = i + 1; j < upperTriangle.getRows(); j++) {
+                sum += upperTriangle.getElement(i, j) * result[j][0];
             }
-            result[i][0] = x;
-        } 
+            result[i][0] = (constantMatrix.getElement(i, 0) - sum) / upperTriangle.getElement(i, i);
+            sum = 0;
+        }
+
+//        for(int i = upperTriangle.getRows() - 1; i >= 0; i--)
+//        {
+//        	//Because this evaluates upper triangle matrices, the diagonal pivots are used to process the other upper values, being the triangle's i by i values.
+//            double x = constantMatrix.getElement(i, 0) / upperTriangle.getElement(i, i);
+//            double subtractionValue;
+//
+//            //These loops iterate through the upper triangle matrix from the bottom to the top, because the goal of backward substitution
+//            //is to solve an upper triangle matrix, meaning the bottom row has a trivial solution: the corresponding constant/the coefficient = solution
+//            for(int j = 0; j < upperTriangle.getCols(); j++)
+//            {
+//            	//These conditionals verify a diagonal value isn't being simplified
+//            	if(i != j)
+//                {
+//            		subtractionValue = (result[j][0]* upperTriangle.getElement(i, j) / upperTriangle.getElement(i, i));
+//                    x -= subtractionValue;
+//                }
+//            }
+//            result[i][0] = x;
+//        }
         return new Matrix(result);
     }
     
