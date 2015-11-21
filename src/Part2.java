@@ -3,10 +3,15 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Scene;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.ScatterChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
@@ -17,42 +22,6 @@ import javafx.util.Pair;
  * screen.
  */
 public class Part2 extends Application {
-
-    private class B_CTableData {
-        private final SimpleStringProperty x0;
-        private final SimpleStringProperty jacobi;
-        private final SimpleStringProperty jacobiN;
-        private final SimpleStringProperty gaussSeidel;
-        private final SimpleStringProperty gaussSeidelN;
-
-        private B_CTableData(Vector x, Vector j, int jn, Vector gs, int gsn) {
-            x0 = new SimpleStringProperty(x.toString());
-            jacobi = new SimpleStringProperty(j.toString());
-            jacobiN = new SimpleStringProperty(Integer.toString(jn));
-            gaussSeidel = new SimpleStringProperty(gs.toString());
-            gaussSeidelN = new SimpleStringProperty(Integer.toString(gsn));
-        }
-
-        public SimpleStringProperty getX0() {
-            return x0;
-        }
-
-        public SimpleStringProperty getJacobi() {
-            return jacobi;
-        }
-
-        public SimpleStringProperty getJacobiN() {
-            return jacobiN;
-        }
-
-        public SimpleStringProperty getGaussSeidel() {
-            return gaussSeidel;
-        }
-
-        public SimpleStringProperty getGaussSeidelN() {
-            return gaussSeidelN;
-        }
-    }
 
     @Override
     public void start(Stage stage) {
@@ -99,15 +68,14 @@ public class Part2 extends Application {
         // ---------------------------- part A --------------------------------
 
         ScrollPane spPartA = new ScrollPane();
-        spPartA.setMaxWidth(MAX_WIDTH / 3);
         spPartA.setPrefHeight(MAX_HEIGHT * 0.37);
         VBox partA = new VBox(3); // default spacing between children: 5
         Label partALabel = new Label("Part A");
-        String AIntro = "Given the above matrix A and vector b, and x0\n" +
-                "randomly selected below, the approximate solution\n" +
-                "to Ax = b by Jacobi and Gauss-Seidel methods\n" +
-                "and the number of iterations taken to reach\n" +
-                "said solution is shown below.";
+        String AIntro = "Given the above matrix A, vector b, epsilon, M, \n" +
+                "and x0 randomly selected (or specifically chosen) \n" +
+                "below, the approximate solution to Ax = b by Jacobi \n" +
+                "and Gauss-Seidel methods and the number of iterations \n" +
+                "taken to reach the solution is shown below.";
         Label partAIntroLabel = new Label(AIntro);
         Label x0Label = new Label("x0: ");
         Label x0 = new Label();
@@ -121,13 +89,49 @@ public class Part2 extends Application {
         Label gsM = new Label();
         Label errorLabel = new Label();
 
-        Button partAButton = new Button("Execute again with different x0");
+        Button partAButton = new Button("Execute again with random x0");
         partAButton.setOnAction(e -> {
-            partAHelper(epsilonField, MField, x0, jacobiSolution, jM,
+            partAHelper(null, epsilonField, MField, x0, jacobiSolution, jM,
                     gsSolution, gsM, errorLabel);
         });
 
-        partAHelper(epsilonField, MField, x0, jacobiSolution, jM, gsSolution,
+        Button partASpecificButton = new Button("Execute again with" +
+                " specific x0:");
+        HBox specificx0Box = new HBox();
+        TextField x0_x = new TextField("0.5");
+        TextField x0_y = new TextField("0.5");
+        TextField x0_z = new TextField("0.5");
+        specificx0Box.getChildren().addAll(new Label("<"), x0_x,
+                new Label(","), x0_y, new Label(","), x0_z,
+                new Label(">"));
+        partASpecificButton.setOnAction(e -> {
+            double x;
+            double y;
+            double z;
+            try {
+                x = Double.parseDouble(x0_x.getText());
+            } catch (Exception ex) {
+                x = 0.5;
+                x0_x.setText("0.5");
+            }
+            try {
+                y = Double.parseDouble(x0_y.getText());
+            } catch (Exception ex) {
+                y = 0.5;
+                x0_y.setText("0.5");
+            }
+            try {
+                z = Double.parseDouble(x0_z.getText());
+            } catch (Exception ex) {
+                z = 0.5;
+                x0_z.setText("0.5");
+            }
+            Vector v = new Vector(new double[] {x, y, z});
+            partAHelper(v, epsilonField, MField, x0, jacobiSolution, jM,
+                    gsSolution, gsM, errorLabel);
+        });
+
+        partAHelper(null, epsilonField, MField, x0, jacobiSolution, jM, gsSolution,
                 gsM, errorLabel);
         partA.getChildren().addAll(x0Label, x0,
                 jLabel, jacobiSolution, jMLabel, jM, gsLabel,
@@ -135,9 +139,9 @@ public class Part2 extends Application {
         spPartA.setContent(partA);
         VBox contentA = new VBox(5);
         contentA.setPrefHeight(MAX_HEIGHT  * 0.85);
-        contentA.setPrefWidth(MAX_WIDTH * 0.25);
+        contentA.setPrefWidth(MAX_WIDTH * 0.28);
         contentA.getChildren().addAll(partALabel, partAIntroLabel, spPartA,
-                partAButton);
+                partAButton, partASpecificButton, specificx0Box);
 
         // --------------------------- end part A -----------------------------
 
@@ -178,16 +182,8 @@ public class Part2 extends Application {
         table.getColumns().addAll(x0Column, jColumn, jMColumn, gsColumn,
                 gsMColumn);
 
-        partB_CButton.setOnAction(e -> {
-            partB_CHelper(epsilonField, MField, numVectorsField, xavg,
-                    R, table, errorLabel);
-        });
-
         HBox B_CFieldandButton = new HBox(5);
         B_CFieldandButton.getChildren().addAll(numVectorsField, partB_CButton);
-
-        partB_CHelper(epsilonField, MField, numVectorsField, xavg,
-                R, table, errorLabel);
 
         partB_C.getChildren().addAll(partB_CLabel, partB_CIntroLabel,
                 xavgLabel, xavg, RLabel, R, numVectorsLabel,
@@ -198,8 +194,40 @@ public class Part2 extends Application {
 
 
 
-        // --------------------------- part D --------------------------------
+        // ---------------------------- part D -------------------------------
+        // note: part D is calculated within partB_CHelper
         VBox partD = new VBox(5);
+        Label partDLabel = new Label("Part D");
+        String partDIntro = "A scatter plot of the data collected from " +
+                "this execution of part B. Blue \npoints represent data " +
+                "from using the Jacobi method. Black points \nrepresent " +
+                "data from using the Gauss-Seidel method. " +
+                "\nExecute part B again for a new plot.";
+        Label partDIntroLabel = new Label(partDIntro);
+        NumberAxis yAxis = new NumberAxis();
+        NumberAxis xAxis = new NumberAxis();
+        ScatterChart<Number, Number> scatterChart = new
+                ScatterChart<>(xAxis, yAxis);
+        xAxis.setLabel("initial error (|| x0 - xexact ||)");
+        yAxis.setLabel("iterations (N)");
+        XYChart.Series<Number, Number> jacobi = new XYChart.Series<>();
+//        jacobi.setName("Jacobi method");
+        XYChart.Series<Number, Number> gaussSeidel = new XYChart.Series<>();
+//        gaussSeidel.setName("Gauss-Seidel Method");
+        scatterChart.getData().addAll(jacobi, gaussSeidel);
+
+        partD.getChildren().addAll(partDLabel, partDIntroLabel, scatterChart);
+
+
+        // -------------------------- end part D -----------------------------
+
+        partB_CButton.setOnAction(e -> {
+            partB_CHelper(epsilonField, MField, numVectorsField, xavg,
+                    R, table, jacobi, gaussSeidel, errorLabel);
+        });
+
+        partB_CHelper(epsilonField, MField, numVectorsField, xavg,
+                R, table, jacobi, gaussSeidel, errorLabel);
 
         hbox.getChildren().addAll(contentA, partB_C, partD);
         vbox.getChildren().addAll(grid, hbox);
@@ -208,11 +236,13 @@ public class Part2 extends Application {
         stage.show();
     }
 
-    private void partAHelper(TextField e, TextField m, Label x0, Label j,
+    private void partAHelper(Vector v, TextField e, TextField m, Label x0, Label j,
                            Label jm, Label gs, Label gsm, Label error) {
         String errorText = "";
         error.setText(errorText);
-        Vector v = new Vector(3, -1, 1);
+        if (v == null) {
+            v = new Vector(3, -1, 1);
+        }
         x0.setText(v.toString());
 
         double epsilon;
@@ -236,16 +266,34 @@ public class Part2 extends Application {
         }
 
         Pair<Vector, Integer> jacobi = jacobi_iter(v, epsilon, M);
-        j.setText(jacobi.getKey().toString());
-        jm.setText(jacobi.getValue().toString());
+        try {
+            j.setText(jacobi.getKey().toString());
+        } catch (NullPointerException ex) {
+            j.setText("No vector approximation found");
+        }
+        try {
+            jm.setText(jacobi.getValue().toString());
+        } catch (NullPointerException ex) {
+            jm.setText("Quit after " + M + " attempts");
+        }
 
         Pair<Vector, Integer> gaussSeidel = gs_iter(v, epsilon, M);
-        gs.setText(gaussSeidel.getKey().toString());
-        gsm.setText(gaussSeidel.getValue().toString());
+        try {
+            gs.setText(gaussSeidel.getKey().toString());
+        } catch (NullPointerException ex) {
+            gs.setText("No vector approximation found");
+        }
+        try {
+            gsm.setText(gaussSeidel.getValue().toString());
+        } catch (NullPointerException ex) {
+            gsm.setText("Quit after " + M + " attempts");
+        }
     }
 
     private void partB_CHelper(TextField e, TextField m, TextField n,
-                               Label xavg, Label r, TableView<B_CTableData> t, Label error) {
+                               Label xavg, Label r, TableView<B_CTableData> t,
+                               XYChart.Series jacobiSeries,
+                               XYChart.Series gaussSeidelSeries, Label error) {
         double xavg_x = 0;
         double xavg_y = 0;
         double xavg_z = 0;
@@ -253,6 +301,8 @@ public class Part2 extends Application {
         String errorText = "";
         error.setText(errorText);
         ObservableList<B_CTableData> data = FXCollections.observableArrayList();
+        jacobiSeries.getData().clear();
+        gaussSeidelSeries.getData().clear();
 
         double epsilon;
         try {
@@ -284,44 +334,58 @@ public class Part2 extends Application {
             error.setText(errorText);
         }
 
+        double[] exact = {(9.0 / 190), (28.0 / 475), (33.0 / 475)};
+        Vector exactVector = new Vector(exact);
+
         for (int i = 0; i < num; i++) {
             Vector v = new Vector(3, -1, 1);
             Pair<Vector, Integer> j = jacobi_iter(v, epsilon, M);
             Pair<Vector, Integer> gs = gs_iter(v, epsilon, M);
-            data.add(new B_CTableData(v, j.getKey(), j.getValue(), gs.getKey(),
-                    gs.getValue()));
-            xavg_x += j.getKey().getContent(0) + gs.getKey().getContent(0);
-            xavg_y += j.getKey().getContent(1) + gs.getKey().getContent(1);
-            xavg_z += j.getKey().getContent(2) + gs.getKey().getContent(2);
-            RSum += j.getValue() / gs.getValue();
+
+            try {
+                // adding to the table
+                data.add(new B_CTableData(v, j.getKey(), j.getValue(), gs.getKey(),
+                        gs.getValue()));
+
+                // adding to the scatter chart
+                double jDifference = j.getKey().minus(exactVector).magnitude();
+                XYChart.Data<Number, Number> jData = new XYChart.Data<>(jDifference, j.getValue());
+                Circle jPoint = new Circle(4, Color.BLUE);
+                jPoint.setStroke(Color.BLACK);
+                jData.setNode(jPoint);
+                jacobiSeries.getData().add(jData);
+                double gsDifference = gs.getKey().minus(exactVector).magnitude();
+                XYChart.Data<Number, Number> gsData = new XYChart.Data<>(gsDifference, gs.getValue());
+                Circle gsPoint = new Circle(4, Color.BLACK);
+                gsPoint.setStroke(Color.RED);
+                gsData.setNode(gsPoint);
+                gaussSeidelSeries.getData().add(gsData);
+
+                // calculating xavg and R
+                xavg_x += j.getKey().getContent(0) + gs.getKey().getContent(0);
+                xavg_y += j.getKey().getContent(1) + gs.getKey().getContent(1);
+                xavg_z += j.getKey().getContent(2) + gs.getKey().getContent(2);
+                RSum += j.getValue() / gs.getValue();
+            } catch (NullPointerException ex) {
+                // if the method fails (M is reached before an approx. is found), then
+                // redo another one in its place
+                i--;
+            }
+            double[] x = {
+                    (xavg_x / (2 * num)),
+                    (xavg_y / (2 * num)),
+                    (xavg_z / (2 * num))
+            };
+            Vector xAvg = new Vector(x);
+            xavg.setText(xAvg.toString());
+            double R = RSum / num;
+            r.setText(Double.toString(R));
+            t.setItems(data);
         }
-        double[] x = {
-                (xavg_x / (2 * num)),
-                (xavg_y / (2 * num)),
-                (xavg_z / (2 * num))
-        };
-        Vector xAvg = new Vector(x);
-        xavg.setText(xAvg.toString());
-        double R = RSum / num;
-        r.setText(Double.toString(R));
-        t.setItems(data);
     }
 
     public static void main(String[] args) {
         launch(args);
-        // currently testing - will write user interaction later
-//        double[] r = {9.0 / 190, 28.0 / 475, 33.0 / 475};
-//        Vector real = new Vector(r);
-//        System.out.println("Real solution: \t\t\t\t" + real);
-//        System.out.println();
-//
-//        for (int i = 0; i < 100; i++) {
-//            Vector v = new Vector(3, -1, 1);
-////            System.out.println("x0: \t\t\t\t\t\t" + v);
-//            System.out.println();
-//            System.out.println("Jacobi approximation: \t\t" + jacobi_iter(v, 0.00005, 100));
-//            System.out.println("Gauss-Seidel approximation: " + gs_iter(v, 0.00005, 100));
-//        }
     }
 
     /**
@@ -499,5 +563,42 @@ public class Part2 extends Application {
         Matrix T = U.times(-1);
 
         return iteration_helper(SInverse, T, x0, B, 0, M, ep);
+    }
+
+
+    private class B_CTableData {
+        private final SimpleStringProperty x0;
+        private final SimpleStringProperty jacobi;
+        private final SimpleStringProperty jacobiN;
+        private final SimpleStringProperty gaussSeidel;
+        private final SimpleStringProperty gaussSeidelN;
+
+        private B_CTableData(Vector x, Vector j, int jn, Vector gs, int gsn) {
+            x0 = new SimpleStringProperty(x.toString());
+            jacobi = new SimpleStringProperty(j.toString());
+            jacobiN = new SimpleStringProperty(Integer.toString(jn));
+            gaussSeidel = new SimpleStringProperty(gs.toString());
+            gaussSeidelN = new SimpleStringProperty(Integer.toString(gsn));
+        }
+
+        public SimpleStringProperty getX0() {
+            return x0;
+        }
+
+        public SimpleStringProperty getJacobi() {
+            return jacobi;
+        }
+
+        public SimpleStringProperty getJacobiN() {
+            return jacobiN;
+        }
+
+        public SimpleStringProperty getGaussSeidel() {
+            return gaussSeidel;
+        }
+
+        public SimpleStringProperty getGaussSeidelN() {
+            return gaussSeidelN;
+        }
     }
 }
