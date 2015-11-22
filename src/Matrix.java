@@ -296,12 +296,13 @@ public class Matrix {
      * @param m a matrix to find the determinant of
      * @return the determinant of this matrix
      */
-    public double determinant(Matrix m) {
-        if (m.getRows() != m.getCols()) {
+    public double determinant() {
+        if (this.getRows() != this.getCols()) {
             throw new IllegalArgumentException("The matrix msut be square.");
         }
-        double[][] mData = m.getElements();
-        return determinant(mData);
+        double[][] mData = this.getElements();
+        double det = determinant(mData);
+        return det;
     }
 
     /**
@@ -312,6 +313,8 @@ public class Matrix {
     private double determinant(double[][] data) {
         if (data.length == 1) {
             return data[0][0];
+        } else if (data.length == 2) {
+            return ((data[0][0] * data[1][1]) - (data[0][1] * data[1][0]));
         }
         double det = 0;
         int mult;
@@ -340,10 +343,11 @@ public class Matrix {
         if (getRows() != 2 || getCols() != 2) {
             throw new IllegalArgumentException("This is not a 2x2 square matrix.");
         }
-        if (determinant(this) == 0) {
+        if (determinant() == 0) {
             return null;
         }
-        //Create inverse matrix's bacckign array and add data
+
+        //Create inverse matrix's backing array and add data
         double[][] inverseData = new double[2][2];
         double temp = elements[0][0];
         inverseData[0][0] = elements[1][1];
