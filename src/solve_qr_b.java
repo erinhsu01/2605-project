@@ -6,6 +6,7 @@ public class solve_qr_b
     double[] diagonal;
     double[][] QRmatrix;
 
+    //Simple function to turn a double array into a matrix
     public double[][] getArrayCopy(Matrix inputMatrix)
     {
     	double[][] newMatrix = new double[inputMatrix.getRows()][inputMatrix.getCols()];
@@ -19,6 +20,7 @@ public class solve_qr_b
         return newMatrix;
     }
     
+    //Simple function to find the norm of a matrix
     public double norm(Matrix inputMatrix) 
     {
         double norm = 0;
@@ -26,7 +28,7 @@ public class solve_qr_b
         {
         	for (int j = 0; j<inputMatrix.getCols(); j++) 
         	{
-        		norm += inputMatrix.getElement(i,j) * inputMatrix.getElement(i,j);
+        		norm = norm + Math.pow(inputMatrix.getElement(i,j), 2);
         	}
         }
         norm = Math.pow(norm, 0.5);
@@ -97,6 +99,7 @@ public class solve_qr_b
                         summation = summation + QRmatrix[i][k]*qMatrix.getElement(i,j);
                     }
                     summation = (-1 * summation)/QRmatrix[k][k];
+                    
                     for (int i = k; i < inputMatrix.getRows(); i++)
                     {
                         qMatrix = set(qMatrix,i,j,qMatrix.getElement(i, j) + summation*QRmatrix[i][k]);
@@ -164,9 +167,7 @@ public class solve_qr_b
             }
         }
         //This turns the coefficient and constant array matrices into Matrix objects, then uses backward substitution to solve
-        Matrix aMatrix = new Matrix(coefficientMatrix);
-        Matrix bMatrix = new Matrix(constantMatrix);
-        return Substitution.backwardSubstitution(getRMatrix(aMatrix), getQMatrix(aMatrix).transpose()).times(bMatrix);
+        return Substitution.backwardSubstitution(getRMatrix(new Matrix(coefficientMatrix)), getQMatrix(new Matrix(coefficientMatrix)).transpose()).times(new Matrix(constantMatrix));
     }
     
     public Matrix set(Matrix inputMatrix, int i, int j, double x)
@@ -186,6 +187,8 @@ public class solve_qr_b
         return new Matrix(newMatrix);
     }
         
+    
+    //Currently broken with improvements to givensQR class. NEEDS FIX
     public static Matrix givensSolve(Matrix inputMatrix) 
     {
     	//The matrix is first broken into an A and B matrices, for the ensuing Ax=B calculation
@@ -211,8 +214,8 @@ public class solve_qr_b
             }
         }
         //This turns the coefficient and constant array matrices into Matrix objects, then uses backward substitution to solve
-        GivensQR qrA = new GivensQR(new Matrix(coefficientMatrix));
-        Matrix QTb = qrA.Q.transpose().times(new Matrix(constantMatrix));
-        return Substitution.backwardSubstitution(qrA.R, QTb);
+      //  GivensQR qrA = new GivensQR(new Matrix(coefficientMatrix));
+    //    Matrix qrB = qrA.Q.transpose().times(new Matrix(constantMatrix));
+        return inputMatrix;// Substitution.backwardSubstitution(qrA.R, qrB);
     }
 }
