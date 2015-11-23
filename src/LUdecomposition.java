@@ -64,10 +64,10 @@ public class LUdecomposition
         {
         	for(int col = 0; col < lowerTriangle.getCols(); col++)
         	{
-        			if(row != col)
-        			{
-        				lowerTriangle = set(lowerTriangle, row, col, lowerTriangle.getElement(row, col) * -1);
-        			}
+        	    if(row != col)
+        	    {
+        		    lowerTriangle = set(lowerTriangle, row, col, lowerTriangle.getElement(row, col) * -1);
+        		}
         	}
         }
     }
