@@ -138,7 +138,7 @@ public class Substitution
         		{
         			newMatrix[i][j] = x;
         		}
-        		else newMatrix[i][j] = inputMatrix.getElement(i, j);
+        		else newMatrix[row][col] = inputMatrix.getElement(i, j);
         	}
         }
         return new Matrix(newMatrix);
