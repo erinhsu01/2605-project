@@ -4,16 +4,10 @@
 import java.util.LinkedList;
 public class LUdecomposition
 {
-    Matrix inputMatrix;
     Matrix upperTriangle;
     Matrix lowerTriangle;
 
-    public LUdecomposition(Matrix originalMatrix) 
-    {
-        this.inputMatrix = originalMatrix;
-    }
-
-    public void lu_fact() 
+    public void lu_fact(Matrix inputMatrix) 
     {
     	LinkedList<Matrix> factorList = new LinkedList<Matrix>();
         double [][]original = inputMatrix.getElements();
