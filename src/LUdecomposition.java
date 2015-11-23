@@ -37,7 +37,7 @@ public class LUdecomposition
             {
                 if (i != j)
                 {
-                    set(factorMatrix, i, j, -1 * factorMatrix.getElement(i, j));
+                    factorMatrix = set(factorMatrix, i, j, -1 * factorMatrix.getElement(i, j));
                 }
             }
         }
@@ -52,7 +52,7 @@ public class LUdecomposition
                 {
                     if (i != j)
                     {
-                        set(factorMatrix, i, j, -1 * factorMatrix.getElement(i, j));
+                        facorMatrix = set(factorMatrix, i, j, -1 * factorMatrix.getElement(i, j));
                     }
                 }
             }
