@@ -3,12 +3,9 @@
 
 public class Householder 
 {
-    double[][] QR;
-    double[][] qVals;
-    double[][] rVals;
-    
+    double[][] factoredMatrix;
     //A simple function to turn a double array into a matrix
-    public double[][] getArrayCopy(Matrix inputMatrix)
+    public double[][] doubletoMatrix(Matrix inputMatrix)
     {
     	double[][] newMatrix = new double[inputMatrix.getRows()][inputMatrix.getCols()];
         for(int row = 0; row < inputMatrix.getRows(); row++)
@@ -24,7 +21,7 @@ public class Householder
     
     public void qr_fact_househ(Matrix inputMatrix) 
     {
-        QR = getArrayCopy(inputMatrix);
+        factoredMatrix = doubletoMatrix(inputMatrix);
         double counter;
         double norm;
         for (int i = 0; i < inputMatrix.getCols(); i++) 
@@ -32,30 +29,30 @@ public class Householder
             norm = 0;
             for (int j = i; j < inputMatrix.getRows(); j++)
             {
-                norm = Math.hypot(norm, QR[j][i]);
+                norm = Math.sqrt(Math.pow(norm,2) + Math.pow(factoredMatrix[j][i],2));
             }
-            if (norm != 0) 
+            if (norm != 0)
             {
-                if (QR[i][i] < 0) 
+                if (factoredMatrix[i][i] < 0) 
                 {
                     norm = -1 * norm;
                 }
                 for (int k = i; k < inputMatrix.getRows(); k++) 
                 {
-                    QR[k][i] = (QR[k][i]/norm);
+                    factoredMatrix[k][i] = (factoredMatrix[k][i]/norm);
                 }
-                QR[i][i]++;
-                for (int l = i+1; l < inputMatrix.getCols(); l++)
+                factoredMatrix[i][i]++;
+                for (int l = i; l-1 < inputMatrix.getCols(); l++)
                 {
                     counter = 0;
                     for (int m = i; m < inputMatrix.getRows(); m++)
                     {
-                    	counter = counter + (QR[m][i]*QR[m][l]);
+                    	counter = counter + (factoredMatrix[m][i]*factoredMatrix[m][l]);
                     }
-                    counter =  (counter*-1)/QR[i][i];
+                    counter =  (counter*-1)/factoredMatrix[i][i];
                     for (int n = i; n < inputMatrix.getRows(); n++) 
                     {
-                        QR[n][l] = QR[n][l] + (counter*QR[n][i]);
+                        factoredMatrix[n][l] = factoredMatrix[n][l] + (counter*factoredMatrix[n][i]);
                     }
                 }
             }
