@@ -4,7 +4,7 @@
 public class solve_qr_b 
 {
     double[] diagonal;
-    double[][] QRmatrix;
+    Matrix QRmatrix;
 
     //Simple function to turn a double array into a matrix
     public double[][] getArrayCopy(Matrix inputMatrix)
@@ -37,44 +37,45 @@ public class solve_qr_b
     
     public void qr_fact_househ(Matrix inputMatrix) 
     {
-        QRmatrix = getArrayCopy(inputMatrix);
+        QRmatrix = inputMatrix;
         diagonal = new double[inputMatrix.getCols()];
         double norm;
-        for (int k = 0; k < inputMatrix.getCols(); k++) 
+        double counter;
+        for (int i = 0; i < inputMatrix.getCols(); i++) 
         {
             norm = 0;
-            for (int i = k; i < inputMatrix.getRows(); i++) 
+            for (int j = i; j < inputMatrix.getRows(); j++) 
             {
-                norm = Math.sqrt(Math.pow(norm,2)+ Math.pow(QRmatrix[i][k],2));
+                norm = Math.sqrt(Math.pow(norm,2)+ Math.pow(QRmatrix.getElement(j,i),2));
             }
 
             if (norm != 0)
             {
-                if (QRmatrix[k][k] < 0) 
+                if (QRmatrix.getElement(i,i) < 0) 
                 {
                     norm *= -1;
                 }
-                for (int i = k; i < inputMatrix.getRows(); i++) 
+                for (int k = i; k < inputMatrix.getRows(); k++) 
                 {
-                    QRmatrix[i][k] = QRmatrix[i][k]/norm;
+                    QRmatrix = set(QRmatrix,k,i,QRmatrix.getElement(k, i)/norm);
                 }
-                QRmatrix[k][k] += 1;
+                QRmatrix = set(QRmatrix,i,i,QRmatrix.getElement(i, i)+1);
 
-                for (int j = k+1; j < inputMatrix.getCols(); j++) 
+                for (int l = i; l-1 < inputMatrix.getCols(); l++) 
                 {
-                    double x = 0;
-                    for (int i = k; i < inputMatrix.getRows(); i++) 
+                    counter = 0;
+                    for (int m = i; m < inputMatrix.getRows(); m++) 
                     {
-                        x += QRmatrix[i][k]*QRmatrix[i][j];
+                        counter += QRmatrix.getElement(m, i)*QRmatrix.getElement(m, l);
                     }
-                    x = -x/QRmatrix[k][k];
-                    for (int i = k; i < inputMatrix.getRows(); i++) 
+                    counter *= -1/QRmatrix.getElement(i,i);
+                    for (int n = i; n < inputMatrix.getRows(); n++) 
                     {
-                        QRmatrix[i][j] += x*QRmatrix[i][k];
+                        QRmatrix = set(QRmatrix,n,l,QRmatrix.getElement(n, l)+(counter*QRmatrix.getElement(n,i)));
                     }
                 }
             }
-            diagonal[k] = -norm;
+            diagonal[i] = norm * -1;
         }
 
     }
@@ -92,17 +93,17 @@ public class solve_qr_b
             qMatrix = set(qMatrix,k,k,1);
             for (int j = k; j < inputMatrix.getCols(); j++) 
             {
-                if (QRmatrix[k][k] != 0) 
+                if (QRmatrix.getElement(k, k) != 0) 
                 {
                     for (int i = k; i < inputMatrix.getRows(); i++)
                     {
-                        summation = summation + QRmatrix[i][k]*qMatrix.getElement(i,j);
+                        summation = summation + QRmatrix.getElement(i,k)*qMatrix.getElement(i,j);
                     }
-                    summation = (-1 * summation)/QRmatrix[k][k];
+                    summation = (-1 * summation)/QRmatrix.getElement(k, k);
                     
                     for (int i = k; i < inputMatrix.getRows(); i++)
                     {
-                        qMatrix = set(qMatrix,i,j,qMatrix.getElement(i, j) + summation*QRmatrix[i][k]);
+                        qMatrix = set(qMatrix,i,j,qMatrix.getElement(i, j) + summation*QRmatrix.getElement(i,k));
                     }
                 }
             }
@@ -130,7 +131,7 @@ public class solve_qr_b
             {
                 if (i < j) 
                 {
-                	rMatrix = set(rMatrix,i,j,QRmatrix[i][j] * -1);
+                	rMatrix = set(rMatrix,i,j,QRmatrix.getElement(i, j) * -1);
                 } 
                 else if (i > j)
                 {
@@ -167,10 +168,10 @@ public class solve_qr_b
             }
         }
         //This turns the coefficient and constant array matrices into Matrix objects, then uses backward substitution to solve
-        return Substitution.backwardSubstitution(getRMatrix(new Matrix(coefficientMatrix)), getQMatrix(new Matrix(coefficientMatrix)).transpose()).times(new Matrix(constantMatrix));
+        return Substitution.backwardSubstitution(getRMatrix(coefficientMatrix), getQMatrix(coefficientMatrix).transpose()).times(constantMatrix);
     }
     
-    public Matrix set(Matrix inputMatrix, int i, int j, double x)
+    public static Matrix set(Matrix inputMatrix, int i, int j, double x)
     {
     	Matrix newMatrix = new Matrix(inputMatrix.getRows(),inputMatrix.getCols());
         for(int row = 0; row < inputMatrix.getRows(); row++)
