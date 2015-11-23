@@ -45,7 +45,7 @@ public class solve_qr_b
             norm = 0;
             for (int i = k; i < inputMatrix.getRows(); i++) 
             {
-                norm = Math.hypot(norm, QRmatrix[i][k]);
+                norm = Math.sqrt(Math.pow(norm,2)+ Math.pow(QRmatrix[i][k],2));
             }
 
             if (norm != 0)
@@ -146,10 +146,10 @@ public class solve_qr_b
     {
     	//The matrix is first broken into an A and B matrices, for the ensuing Ax=B calculation
     	//The A coefficient matrix is the same matrix, minus the rightmost column
-        double[][] coefficientMatrix = new double[inputMatrix.getRows()][inputMatrix.getCols() - 1];
+        Matrix coefficientMatrix = new Matrix(inputMatrix.getRows(),inputMatrix.getCols() - 1);
         
         //The B matrix is the rightmost column of the input matrix
-        double[][] constantMatrix = new double[inputMatrix.getRows()][1];
+        Matrix constantMatrix = new Matrix(inputMatrix.getRows(),1);
         
         //This iterates through the input matrix, populating the coefficient and constant matrices
         for(int i = 0; i < inputMatrix.getRows(); i++)
@@ -158,11 +158,11 @@ public class solve_qr_b
             {
                 if(j != inputMatrix.getCols()-1)
                 {
-                	coefficientMatrix[i][j] = inputMatrix.getElement(i, j);
+                	coefficientMatrix= set(coefficientMatrix,i,j,inputMatrix.getElement(i, j));
                 }
                 else
                 {
-                	constantMatrix[i][0] = inputMatrix.getElement(i, j);
+                	constantMatrix = set(constantMatrix,i,0,inputMatrix.getElement(i, j));
                 }
             }
         }
@@ -172,19 +172,19 @@ public class solve_qr_b
     
     public Matrix set(Matrix inputMatrix, int i, int j, double x)
     {
-    	double[][] newMatrix = new double[inputMatrix.getRows()][inputMatrix.getCols()];
+    	Matrix newMatrix = new Matrix(inputMatrix.getRows(),inputMatrix.getCols());
         for(int row = 0; row < inputMatrix.getRows(); row++)
         {
         	for(int col = 0; col < inputMatrix.getCols(); col++)
         	{
         		if(row == i && col == j)
         		{
-        			newMatrix[row][col] = x;
+        			newMatrix = set(newMatrix,row,col,x);
         		}
-        		else newMatrix[row][col] = inputMatrix.getElement(row, col);
+        		else newMatrix = set(newMatrix,row,col,inputMatrix.getElement(row, col));
         	}
         }
-        return new Matrix(newMatrix);
+        return newMatrix;
     }
         
     
@@ -193,10 +193,10 @@ public class solve_qr_b
     {
     	//The matrix is first broken into an A and B matrices, for the ensuing Ax=B calculation
     	//The A coefficient matrix is the same matrix, minus the rightmost column
-        double[][] coefficientMatrix = new double[inputMatrix.getRows()][inputMatrix.getCols() - 1];
+        Matrix coefficientMatrix = new Matrix(inputMatrix.getRows(),inputMatrix.getCols() - 1);
         
         //The B matrix is the rightmost column of the input matrix
-        double[][] constantMatrix = new double[inputMatrix.getRows()][1];
+        Matrix constantMatrix = new Matrix(inputMatrix.getRows(),1);
         
         //This iterates through the input matrix, populating the coefficient and constant matrices
         for(int i = 0; i < inputMatrix.getRows(); i++)
@@ -205,15 +205,17 @@ public class solve_qr_b
             {
                 if(j != inputMatrix.getCols()-1)
                 {
-                	coefficientMatrix[i][j] = inputMatrix.getElement(i, j);
+                	coefficientMatrix = set(coefficientMatrix,i,j,inputMatrix.getElement(i, j));
                 }
                 else
                 {
-                	constantMatrix[i][0] = inputMatrix.getElement(i, j);
+                	constantMatrix = set(constantMatrix,i,0,inputMatrix.getElement(i, j));
                 }
             }
         }
         //This turns the coefficient and constant array matrices into Matrix objects, then uses backward substitution to solve
+        
+        //Following section is broken with some impovements to the QR code, requires fixing
       //  GivensQR qrA = new GivensQR(new Matrix(coefficientMatrix));
     //    Matrix qrB = qrA.Q.transpose().times(new Matrix(constantMatrix));
         return inputMatrix;// Substitution.backwardSubstitution(qrA.R, qrB);
