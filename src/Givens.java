@@ -2,28 +2,25 @@
 // 2605 Project 11/24/15
 
 import java.util.ArrayList;
-public class GivensQR 
+public class Givens 
 {
-	//This Arraylist is used to simplify the factorization of Q, and is such filled in the findR method
+    //This Arraylist is used to simplify the factorization of Q, and is such filled in the getR method
     ArrayList<Matrix> givensFactor;
-    
-    public Matrix findQ(Matrix inputMatrix) 
+    public Matrix getQ(Matrix inputMatrix) 
     {
     	//Because the finding of R populates the Arraylist, it needs to be done first, even if the user
     	//tries to find Q first
     	if(givensFactor.get(0) == null)
     	{
-    		findR(inputMatrix);
+    		getR(inputMatrix);
     	}
         Matrix qMatrix = givensFactor.get(0);
         //This loop iterates through the Arraylist, multiplying items to form the final Q matrix
-        for(int i = 0; i < givensFactor.size(); i++) 
+        //MAY require qMatrix = givensFactor.get(0); inside the loop and starting at 0 instead
+        //test, fix if necessary
+        for(int i = 1; i < givensFactor.size(); i++) 
         {
-            if(i == 0)
-            {
-            	qMatrix = givensFactor.get(0);
-            }
-            if(i != 0 && i < givensFactor.size()-1) 
+            if(i < givensFactor.size()-1) 
             {
             	qMatrix = qMatrix.times(givensFactor.get(i + 1));
             }
@@ -31,19 +28,19 @@ public class GivensQR
         return qMatrix;
     }
  
-    public Matrix findR(Matrix inputMatrix)
+    public Matrix getR(Matrix inputMatrix)
     {
     	//These loops iterate over the inputMatrix to factor every element
-        for(int i = 0; i < inputMatrix.getCols(); i++) 
+        for(int i = 0; i < inputMatrix.getRows(); i++) 
         {
-            for(int j = i + 1; j < inputMatrix.getRows(); j++)
+            for(int j = i; j-1 < inputMatrix.getCols(); j++)
             {
                 double colElement = inputMatrix.getElement(i, i);
                 double rowElement = inputMatrix.getElement(j, i);
                 //The givensMatrix variable will contain the final values, which will be returned at the end
                 double[][] givensMatrix = new double[inputMatrix.getRows()][inputMatrix.getCols()];
                 //This loop simply populates the diagonal with 1 values
-                for (int k = 0; k < inputMatrix.getCols(); k++) 
+                for (int k = 0; k < inputMatrix.getRows(); k++) 
                 {
                 	givensMatrix[k][k] = 1;
                 }
@@ -85,6 +82,6 @@ public class GivensQR
 
     public double getError(Matrix inputMatrix) 
     {
-        return norm(findQ(inputMatrix).times(findR(inputMatrix)).subtract(inputMatrix));
+        return norm(getQ(inputMatrix).times(getR(inputMatrix)).subtract(inputMatrix));
     }
 }
