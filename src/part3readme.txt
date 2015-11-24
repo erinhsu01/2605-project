@@ -6,7 +6,8 @@ once you are in the correct directory:
 
     javac Part3.java
 
-Once the source file is compiled, in the command line, run the program by entering into the command line:
+Once the source file is compiled, in the command line, run the program by
+entering into the command line:
 
     java Part3
 
@@ -19,4 +20,22 @@ To run the program again, close the Java application window and run
 
     java Part3
 
-again in the command line. 
+again in the command line.
+
+Some things to note:
+    * The ArrayList returned by the generateRandom2x2Matrix method contains the
+      following data in this order:
+        * determinant of A
+        * trace of A,
+        * the number of iterations to get the largest eigenvalue for A
+        * the determinant of A-Inverse
+        * the trace of A-Inverse
+        * the number of iterations to get the smallest eigenvalue of A
+        * the largest eigenvalue of A
+        * the smallest eigenvalue of A (or the largest eigenvalue of A-Inverse)
+        * the eigenvector of A
+        * the eigenvector of A-Inverse
+    * Instead of creating 1000 matrices, I actually create 2000 matrices
+      because some of them will return null because an accurate eigenvalue
+      cannot be found with 100 iterations. However, the method that displays
+      the points only gets the first 1000 matrices out of the ArrayList.

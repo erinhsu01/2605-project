@@ -15,234 +15,27 @@ import java.util.Random;
 public class Part3 extends Application {
 
     public static Color getColor(int i) {
-        if (i < 50) {
-            if (i < 25) {
-                if (i < 10) {
-                    if (i == 1) {
-                        return Color.ALICEBLUE;
-                    } else if (i == 2) {
-                        return Color.ANTIQUEWHITE;
-                    } else if (i == 3) {
-                        return Color.AQUA;
-                    } else if (i == 4) {
-                        return Color.AQUAMARINE;
-                    } else if (i == 5) {
-                        return Color.AZURE;
-                    } else if (i == 6) {
-                        return Color.BEIGE;
-                    } else if (i == 7) {
-                        return Color.BISQUE;
-                    } else if (i == 8) {
-                        return Color.ORANGE;
-                    } else if (i == 9) {
-                        return Color.BLANCHEDALMOND;
-                    }
-                } else {
-                    if (i == 10) {
-                        return Color.BLUE;
-                    } else if (i == 11) {
-                        return Color.BLUEVIOLET;
-                    } else if (i == 12) {
-                        return Color.BROWN;
-                    } else if (i == 13) {
-                        return Color.BURLYWOOD;
-                    } else if (i == 14) {
-                        return Color.CADETBLUE;
-                    } else if (i == 15) {
-                        return Color.CHARTREUSE;
-                    } else if (i == 16) {
-                        return Color.CHOCOLATE;
-                    } else if (i == 17) {
-                        return Color.CORAL;
-                    } else if (i == 18) {
-                        return Color.CORNFLOWERBLUE;
-                    } else if (i == 19) {
-                        return Color.CORNSILK;
-                    } else if (i == 20) {
-                        return Color.CRIMSON;
-                    } else if (i == 21) {
-                        return Color.CYAN;
-                    } else if (i == 22) {
-                        return Color.DARKBLUE;
-                    } else if (i == 23) {
-                        return Color.DARKCYAN;
-                    } else if (i == 24) {
-                        return Color.DARKGOLDENROD;
-                    }
-                }
-            } else {
-                if (i < 35) {
-                    if (i == 25) {
-                        return Color.DARKGRAY;
-                    } else if (i == 26) {
-                        return Color.DARKGREEN;
-                    } else if (i == 27) {
-                        return Color.DARKGREY;
-                    } else if (i == 28) {
-                        return Color.DARKKHAKI;
-                    } else if (i == 29) {
-                        return Color.DARKMAGENTA;
-                    } else if (i == 30) {
-                        return Color.DARKOLIVEGREEN;
-                    } else if (i == 31) {
-                        return Color.DARKORANGE;
-                    } else if (i == 32) {
-                        return Color.DARKORCHID;
-                    } else if (i == 33) {
-                        return Color.DARKRED;
-                    } else if (i == 34) {
-                        return Color.DARKSALMON;
-                    }
-                } else {
-                    if (i == 35) {
-                        return Color.DARKSEAGREEN;
-                    } else if (i == 36) {
-                        return Color.DARKSLATEBLUE;
-                    } else if (i == 37) {
-                        return Color.DARKSLATEGRAY;
-                    } else if (i == 38) {
-                        return Color.DARKTURQUOISE;
-                    } else if (i == 39) {
-                        return Color.DARKVIOLET;
-                    } else if (i == 40) {
-                        return Color.DEEPPINK;
-                    } else if (i == 41) {
-                        return Color.DEEPSKYBLUE;
-                    } else if (i == 42) {
-                        return Color.DIMGRAY;
-                    } else if (i == 43) {
-                        return Color.DODGERBLUE;
-                    } else if (i == 44) {
-                        return Color.FIREBRICK;
-                    } else if (i == 45) {
-                        return Color.FLORALWHITE;
-                    } else if (i == 46) {
-                        return Color.FORESTGREEN;
-                    } else if (i == 47) {
-                        return Color.FUCHSIA;
-                    } else if (i == 48) {
-                        return Color.GAINSBORO;
-                    } else if (i == 49) {
-                        return Color.GHOSTWHITE;
-                    }
-                }
-            }
-        } else if (i > 49) {
-            if (i < 60) {
-                if (i == 50) {
-                    return Color.GOLD;
-                } else if (i == 51) {
-                    return Color.GOLDENROD;
-                } else if (i == 52) {
-                    return Color.GRAY;
-                } else if (i == 53) {
-                    return Color.GREEN;
-                } else if (i == 54) {
-                    return Color.GREENYELLOW;
-                } else if (i == 55) {
-                    return Color.GREY;
-                } else if (i == 56) {
-                    return Color.HONEYDEW;
-                } else if (i == 57) {
-                    return Color.HOTPINK;
-                } else if (i == 58) {
-                    return Color.INDIANRED;
-                } else if (i == 59) {
-                    return Color.INDIGO;
-                }
-            } else if (i >= 60 && i < 70) {
-                if (i == 60) {
-                    return Color.IVORY;
-                } else if (i == 61) {
-                    return Color.KHAKI;
-                } else if (i == 62) {
-                    return Color.LAVENDER;
-                } else if (i == 63) {
-                    return Color.LAVENDERBLUSH;
-                } else if (i == 64) {
-                    return Color.LAWNGREEN;
-                } else if (i == 65) {
-                    return Color.LEMONCHIFFON;
-                } else if (i == 66) {
-                    return Color.LIGHTBLUE;
-                } else if (i == 67) {
-                    return Color.LIGHTCORAL;
-                } else if (i == 68) {
-                    return Color.LIGHTCYAN;
-                } else if (i == 69) {
-                    return Color.LIGHTGOLDENRODYELLOW;
-                }
-            } else if (i >= 70 && i < 80) {
-                if (i == 70) {
-                    return Color.LIGHTGRAY;
-                } else if (i == 71) {
-                    return Color.LIGHTGREEN;
-                } else if (i == 72) {
-                    return Color.LIGHTPINK;
-                } else if (i == 73) {
-                    return Color.LIGHTSALMON;
-                } else if (i == 74) {
-                    return Color.LIGHTSEAGREEN;
-                } else if (i == 75) {
-                    return Color.LIGHTSKYBLUE;
-                } else if (i == 76) {
-                    return Color.LIGHTSLATEGRAY;
-                } else if (i == 77) {
-                    return Color.LIGHTSTEELBLUE;
-                } else if (i == 78) {
-                    return Color.LIGHTYELLOW;
-                } else if (i == 79) {
-                    return Color.LIME;
-                }
-            } else if (i >= 80 && i < 90) {
-                if (i == 80) {
-                    return Color.LIMEGREEN;
-                } else if (i == 81) {
-                    return Color.LINEN;
-                } else if (i == 82) {
-                    return Color.MAGENTA;
-                } else if (i == 83) {
-                    return Color.MAROON;
-                } else if (i == 84) {
-                    return Color.MEDIUMAQUAMARINE;
-                } else if (i == 85) {
-                    return Color.MEDIUMBLUE;
-                } else if (i == 86) {
-                    return Color.MEDIUMORCHID;
-                } else if (i == 87) {
-                    return Color.MEDIUMPURPLE;
-                } else if (i == 88) {
-                    return Color.MEDIUMSEAGREEN;
-                } else if (i == 89) {
-                    return Color.MEDIUMSLATEBLUE;
-                }
-            } else {
-                if (i == 90) {
-                    return Color.MEDIUMSPRINGGREEN;
-                } else if (i == 91) {
-                    return Color.MEDIUMTURQUOISE;
-                } else if (i == 92) {
-                    return Color.MEDIUMVIOLETRED;
-                } else if (i == 93) {
-                    return Color.MIDNIGHTBLUE;
-                } else if (i == 94) {
-                    return Color.MINTCREAM;
-                } else if (i == 95) {
-                    return Color.MISTYROSE;
-                } else if (i == 96) {
-                    return Color.MOCCASIN;
-                } else if (i == 97) {
-                    return Color.NAVAJOWHITE;
-                } else if (i == 98) {
-                    return Color.NAVY;
-                } else if (i == 99) {
-                    return Color.OLDLACE;
-                } else {
-                    return Color.OLIVE;
-                }
-            }
+        if (i < 10) {
+            return Color.RED;
+        } else if (i < 20) {
+            return Color.ORANGE;
+        } else if (i < 30) {
+            return Color.YELLOW;
+        } else if (i < 40) {
+            return Color.GREEN;
+        } else if (i < 50) {
+            return Color.BLUE;
+        } else if (i < 60) {
+            return Color.PURPLE;
+        } else if (i < 70) {
+            return Color.PINK;
+        } else if (i < 80) {
+            return Color.GRAY;
+        } else if (i < 90) {
+            return Color.WHITE;
+        } else {
+            return Color.BLACK;
         }
-        return Color.BLACK;
     }
 
     @Override
@@ -251,8 +44,8 @@ public class Part3 extends Application {
         ArrayList<ArrayList<Object>> matrices1000 = generate1000Matrices();
 
         stage.setTitle("Graphs");
-        final NumberAxis xAxis = new NumberAxis(-10, 10, 1);
-        final NumberAxis yAxis = new NumberAxis(-10, 10, 1);
+        final NumberAxis xAxis = new NumberAxis(-6, 6, 1);
+        final NumberAxis yAxis = new NumberAxis(-5, 5, 1);
         final NumberAxis xAxis2 = new NumberAxis(-10, 10, 1);
         final NumberAxis yAxis2 = new NumberAxis(-10, 10, 1);
         final ScatterChart<Number, Number> scatterchart = new
@@ -312,7 +105,7 @@ public class Part3 extends Application {
         /*Testing Code
 
         //test trace, determinant, power_method
-        double[][] mArray = new double[2][2];
+        /*double[][] mArray = new double[2][2];
         mArray[0][0] = 2.0;
         mArray[0][1] = -12.0;
         mArray[1][0] = 1.0;
@@ -344,32 +137,45 @@ public class Part3 extends Application {
         //Testing generateRandom2x2Matrix, create2x2Matrix
         ArrayList<Object> result = generateRandom2x2Matrix();
         if (result != null) {
-            System.out.println("\nMatrix:\n");
-            System.out.println(result.get(0).toString());
 
             System.out.println("\nDeterminant\n");
-            System.out.println(result.get(1));
+            System.out.println(result.get(0));
 
             System.out.println("\nTrace\n");
-            System.out.println(result.get(2));
+            System.out.println(result.get(1));
 
             System.out.println("\n# of Iterations:\n");
-            System.out.println(result.get(3));
-
-            System.out.println("\nInverse Matrix:\n");
-            System.out.println(result.get(4).toString());
+            System.out.println(result.get(2));
 
             System.out.println("\nInverse Determinant\n");
-            System.out.println(result.get(5));
+            System.out.println(result.get(3));
 
             System.out.println("\nInverse Trace\n");
-            System.out.println(result.get(6));
+            System.out.println(result.get(4));
 
             System.out.println("\n# of Inverse Iterations:\n");
+            System.out.println(result.get(5));
+
+            System.out.println("\nLargest Eigenvalue:\n");
+            System.out.println(result.get(6));
+
+            System.out.println("\nSmallst Eigenvalue:\n");
             System.out.println(result.get(7));
 
+            System.out.println("\nEigenvector:\n");
+            System.out.println(result.get(8));
+
+            System.out.println("\nInverse Eigenvector:\n");
+            System.out.println(result.get(9));
+
             System.out.println("\nVector:\n");
-            System.out.println(result.get(8).toString());
+            System.out.println(result.get(10).toString());
+
+            System.out.println("\nMatrix:\n");
+            System.out.println(result.get(11).toString());
+
+            System.out.println("\nInverse Matrix:\n");
+            System.out.println(result.get(12).toString());
         } else {
             System.out.println("null");
         }*/
@@ -383,6 +189,8 @@ public class Part3 extends Application {
      * @param v a vector to begin the iteration on
      * @param epsilon an accepted tolerance to compare the error to
      * @param n the number of times to run the iteration
+     * @return an ArrayLisat whose contents are Eigenvalue, Eigenvector,
+     *         # of Iterations
      */
     private static ArrayList<Object> power_method(Matrix m, Vector v,
             double epsilon, int n) {
@@ -460,10 +268,15 @@ public class Part3 extends Application {
 
     /**
      * Generates a 2x2 matrix and finds the determinant, trace, minimum
-     * eigenvalue, maximum eigenvalue, and the number of iterations to find each * of the eigenvalues
-     * @return an arraylist that contains the determinant of A, trace of A, the
-     *         number of iterations to get an largest eigenvalue for A, and the
-     *         number of iterations to get the smallest eigenvalue of A
+     * eigenvalue, maximum eigenvalue, and the number of iterations to find
+     * each of the eigenvalues
+     * @return an ArrayList that contains the determinant of A, trace of A, the
+     *         number of iterations to get the largest eigenvalue for A, the
+     *         determinant of A-Inverse, the trace of A-Inverse, and the
+     *         number of iterations to get the smallest eigenvalue of A, the
+     *         largest eigenvalue of A, the smallest eigenvalue of A (or the
+     *         largest eigenvalue of A-Inverse), the eigenvector of A, and the
+     *         eigenvector of A-Inverse
      */
     private static ArrayList<Object> generateRandom2x2Matrix() {
         Matrix m = create2x2Matrix();
@@ -491,24 +304,41 @@ public class Part3 extends Application {
         double inverseT = mInverse.trace();
         int iterations = (int) result.get(2);
         int inverseIterations = (int) inverseResult.get(2);
+        double largestEigenvalue = (double) result.get(0);
+        double smallestEigenvalue = (double) inverseResult.get(0);
+        Vector eigenvector = (Vector) result.get(1);
+        Vector inverseEigenvector = (Vector) inverseResult.get(1);
 
         ArrayList<Object> returnList = new ArrayList<>();
+
         returnList.add(d);
         returnList.add(t);
         returnList.add(iterations);
         returnList.add(inverseD);
         returnList.add(inverseT);
         returnList.add(inverseIterations);
+        returnList.add(largestEigenvalue);
+        returnList.add(smallestEigenvalue);
+        returnList.add(eigenvector);
+        returnList.add(inverseEigenvector);
 
 
-        //testing
-        returnList.add(m); /* CHANGE THIS BACK*/
-        returnList.add(mInverse); /* CHANGE THIS BACK*/
-        returnList.add(initial); /* CHANGE THIS BACK*/
+        /*testing
+        returnList.add(initial);
+        returnList.add(m);
+        returnList.add(mInverse);
+        */
 
         return returnList;
     }
 
+    /**
+     * Method that generates 2000 matrices instead of 1000 matrices to account
+     * for matrices that return null.
+     * If it doesn't return null, the matrix gets added to the ArrayList, which
+     * the ArrayList pulls data from
+     * @return an Arraylist that contains the non-null matrices' data
+     */
     private ArrayList<ArrayList<Object>> generate1000Matrices() {
         ArrayList<ArrayList<Object>> matrices1000 = new
             ArrayList<ArrayList<Object>>();

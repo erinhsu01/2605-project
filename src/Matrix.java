@@ -356,15 +356,15 @@ public class Matrix {
         inverseData[1][0] = elements[1][0] * -1;
 
         // Coefficient of inverse is 1 / (ad-bc)
-        double coefficient = 1 / ((elements[0][0] * elements[1][1]) -
-            (elements[0][1] * elements[1][0]));
+        double coefficient = (elements[0][0] * elements[1][1]) -
+            (elements[0][1] * elements[1][0]);
 
-        //Multiply each element by the coefficient
-        for (int i = 0; i < 2; i++) {
-            for (int j = 0; j < 2; j++) {
-                inverseData[i][j] = inverseData[i][j] * coefficient;
-            }
-        }
+        //Divides each element by coefficient
+        inverseData[0][0] /= coefficient;
+        inverseData[1][1] /= coefficient;
+        inverseData[0][1] /= coefficient;
+        inverseData[1][0] /= coefficient;
+
         Matrix inverse = new Matrix(inverseData);
         return inverse;
     }
