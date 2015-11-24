@@ -162,8 +162,10 @@ public class Part2 extends Application {
         Label numVectorsLabel = new Label("# of times to execute part A:");
         TextField numVectorsField = new TextField("100");
         Button partB_CButton = new Button("Execute again");
-        Label xavgLabel = new Label("xavg:");
-        Label xavg = new Label();
+        Label xavgJLabel = new Label("xavg for Jacobi:");
+        Label xavgJ = new Label();
+        Label xavgGSLabel = new Label("xavg for Gauss-Seidel:");
+        Label xavgGS = new Label();
         Label RLabel = new Label("R:");
         Label R = new Label();
 
@@ -186,7 +188,7 @@ public class Part2 extends Application {
         B_CFieldandButton.getChildren().addAll(numVectorsField, partB_CButton);
 
         partB_C.getChildren().addAll(partB_CLabel, partB_CIntroLabel,
-                xavgLabel, xavg, RLabel, R, numVectorsLabel,
+                xavgJLabel, xavgJ, xavgGSLabel, xavgGS, RLabel, R, numVectorsLabel,
                 B_CFieldandButton, table);
 
         // ----------------------- end parts B & C ---------------------------
@@ -222,11 +224,11 @@ public class Part2 extends Application {
         // -------------------------- end part D -----------------------------
 
         partB_CButton.setOnAction(e -> {
-            partB_CHelper(epsilonField, MField, numVectorsField, xavg,
+            partB_CHelper(epsilonField, MField, numVectorsField, xavgJ, xavgGS,
                     R, table, jacobi, gaussSeidel, errorLabel);
         });
 
-        partB_CHelper(epsilonField, MField, numVectorsField, xavg,
+        partB_CHelper(epsilonField, MField, numVectorsField, xavgJ, xavgGS,
                 R, table, jacobi, gaussSeidel, errorLabel);
 
         hbox.getChildren().addAll(contentA, partB_C, partD);
@@ -291,12 +293,16 @@ public class Part2 extends Application {
     }
 
     private void partB_CHelper(TextField e, TextField m, TextField n,
-                               Label xavg, Label r, TableView<B_CTableData> t,
+                               Label xavgJ, Label xavgGS, Label r,
+                               TableView<B_CTableData> t,
                                XYChart.Series jacobiSeries,
                                XYChart.Series gaussSeidelSeries, Label error) {
-        double xavg_x = 0;
-        double xavg_y = 0;
-        double xavg_z = 0;
+        double xavgJ_x = 0;
+        double xavgJ_y = 0;
+        double xavgJ_z = 0;
+        double xavgGS_x = 0;
+        double xavgGS_y = 0;
+        double xavgGS_z = 0;
         double RSum = 0;
         String errorText = "";
         error.setText(errorText);
@@ -362,22 +368,32 @@ public class Part2 extends Application {
                 gaussSeidelSeries.getData().add(gsData);
 
                 // calculating xavg and R
-                xavg_x += j.getKey().getContent(0) + gs.getKey().getContent(0);
-                xavg_y += j.getKey().getContent(1) + gs.getKey().getContent(1);
-                xavg_z += j.getKey().getContent(2) + gs.getKey().getContent(2);
+                xavgJ_x += j.getKey().getContent(0);
+                xavgGS_x += gs.getKey().getContent(0);
+                xavgJ_y += j.getKey().getContent(1);
+                xavgGS_y += gs.getKey().getContent(1);
+                xavgJ_z += j.getKey().getContent(2);
+                xavgGS_z += gs.getKey().getContent(2);
                 RSum += j.getValue() / gs.getValue();
             } catch (NullPointerException ex) {
                 // if the method fails (M is reached before an approx. is found), then
                 // redo another one in its place
                 i--;
             }
-            double[] x = {
-                    (xavg_x / (2 * num)),
-                    (xavg_y / (2 * num)),
-                    (xavg_z / (2 * num))
+            double[] xJ = {
+                    (xavgJ_x / num),
+                    (xavgJ_y / num),
+                    (xavgJ_z / num)
             };
-            Vector xAvg = new Vector(x);
-            xavg.setText(xAvg.toString());
+            double[] xGS = {
+                    (xavgGS_x / num),
+                    (xavgGS_y / num),
+                    (xavgGS_z / num)
+            };
+            Vector xAvgJ = new Vector(xJ);
+            xavgJ.setText(xAvgJ.toString());
+            Vector xAvgGS = new Vector(xGS);
+            xavgGS.setText(xAvgGS.toString());
             double R = RSum / num;
             r.setText(Double.toString(R));
             t.setItems(data);
