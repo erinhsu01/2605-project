@@ -1,7 +1,7 @@
 // Chad Gerhard, Erin Hsu, Michael Sharpe
 // 2605 Project 11/24/15
 
-public class Householder 
+public class Householder
 {
     double[][] factoredMatrix;
     //A simple function to turn a double array into a matrix
@@ -17,14 +17,14 @@ public class Householder
         }
         return newMatrix;
     }
-    
-    
-    public void qr_fact_househ(Matrix inputMatrix) 
+
+
+    public void qr_fact_househ(Matrix inputMatrix)
     {
         factoredMatrix = doubletoMatrix(inputMatrix);
         double counter;
         double norm;
-        for (int i = 0; i < inputMatrix.getCols(); i++) 
+        for (int i = 0; i < inputMatrix.getCols(); i++)
         {
             norm = 0;
             for (int j = i; j < inputMatrix.getRows(); j++)
@@ -33,11 +33,11 @@ public class Householder
             }
             if (norm != 0)
             {
-                if (factoredMatrix[i][i] < 0) 
+                if (factoredMatrix[i][i] < 0)
                 {
                     norm = -1 * norm;
                 }
-                for (int k = i; k < inputMatrix.getRows(); k++) 
+                for (int k = i; k < inputMatrix.getRows(); k++)
                 {
                     factoredMatrix[k][i] = (factoredMatrix[k][i]/norm);
                 }
@@ -50,7 +50,7 @@ public class Householder
                     	counter = counter + (factoredMatrix[m][i]*factoredMatrix[m][l]);
                     }
                     counter =  (counter*-1)/factoredMatrix[i][i];
-                    for (int n = i; n < inputMatrix.getRows(); n++) 
+                    for (int n = i; n < inputMatrix.getRows(); n++)
                     {
                         factoredMatrix[n][l] = factoredMatrix[n][l] + (counter*factoredMatrix[n][i]);
                     }
