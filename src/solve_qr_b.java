@@ -37,6 +37,9 @@ public class solve_qr_b
     
     public void qr_fact_househ(Matrix inputMatrix) 
     {
+        //The actual factoring function. This inputMatrix is the only one that will be used directly for calculation
+        //The resulting, factored QRmatrix is not returned, but is instead accessed through the constituent Q and R
+        //returning functions.
         QRmatrix = inputMatrix;
         diagonal = new double[inputMatrix.getCols()];
         double norm;
@@ -82,8 +85,11 @@ public class solve_qr_b
 
     public Matrix getQMatrix(Matrix inputMatrix) 
     {
+        //This function takes in the factored QR matrix as a basis of factoring out the Q matrix
         Matrix qMatrix = new Matrix(inputMatrix.getRows(),inputMatrix.getCols());
         double summation = 0;
+        //These loops iterate through every space in the matrix, performing the necessary summation and
+        //comparisons for factoring.
         for (int k = inputMatrix.getCols()-1; k >= 0; k--) 
         {
             for (int i = 0; i < inputMatrix.getRows(); i++) 
@@ -124,11 +130,14 @@ public class solve_qr_b
 
     public Matrix getRMatrix(Matrix inputMatrix) 
     {
+        //This function creates an R matrix, where every variable is set by using the factored QRmatrix.
         Matrix rMatrix = new Matrix(inputMatrix.getRows(),inputMatrix.getCols());
         for (int i = 0; i < inputMatrix.getRows(); i++) 
         {
             for (int j = 0; j < inputMatrix.getCols(); j++) 
             {
+                //Because the matrix is factored already, the only necessary processing is sorting and placing values into
+                //the final R matrix.
                 if (i < j) 
                 {
                 	rMatrix = set(rMatrix,i,j,QRmatrix.getElement(i, j) * -1);
@@ -171,6 +180,7 @@ public class solve_qr_b
         return Substitution.backwardSubstitution(getRMatrix(coefficientMatrix), getQMatrix(coefficientMatrix).transpose()).times(constantMatrix);
     }
     
+    //Simple function to set a value in a matrix
     public static Matrix set(Matrix inputMatrix, int i, int j, double x)
     {
     	Matrix newMatrix = new Matrix(inputMatrix.getRows(),inputMatrix.getCols());
