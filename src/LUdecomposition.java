@@ -1,13 +1,14 @@
 // Chad Gerhard, Erin Hsu, Michael Sharpe
 // 2605 Project 11/24/15
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 public class LUdecomposition
 {
     Matrix upperTriangle;
     Matrix lowerTriangle;
 
-    public void lu_fact(Matrix inputMatrix) 
+    public ArrayList<Object> lu_fact(Matrix inputMatrix)
     {
     	LinkedList<Matrix> factorList = new LinkedList<Matrix>();
         double [][]original = inputMatrix.getElements();
@@ -29,7 +30,7 @@ public class LUdecomposition
                 }
             }
         }
-       
+
         Matrix factorMatrix = factorList.remove();
         for (int i = 0; i < inputMatrix.getRows(); i++)
         {
@@ -41,7 +42,7 @@ public class LUdecomposition
                 }
             }
         }
-        
+
         lowerTriangle = factorMatrix;
         while (factorList.peek() != null)
         {
@@ -58,7 +59,7 @@ public class LUdecomposition
             }
             lowerTriangle = lowerTriangle.times(factorMatrix);
         }
-        
+
         upperTriangle = new Matrix(upper);
         for(int row = 0; row < lowerTriangle.getRows(); row++)
         {
@@ -66,12 +67,19 @@ public class LUdecomposition
         	{
         	    if(row != col)
         	    {
-        		    lowerTriangle = set(lowerTriangle, row, col, lowerTriangle.getElement(row, col) * -1);
+        		    lowerTriangle = set(lowerTriangle, row, col,
+                        lowerTriangle.getElement(row, col) * -1);
         		}
         	}
         }
+        ArrayList<Object> ret = new ArrayList<>();
+        ret.add(upperTriangle);
+        ret.add(lowerTriangle);
+        double error = getError(inputMatrix);
+        ret.add(error);
+        return ret;
     }
-        
+
     public Matrix set(Matrix inputMatrix, int i, int j, double x)
     {
     	double[][] newMatrix = new double[inputMatrix.getRows()][inputMatrix.getCols()];
@@ -89,22 +97,26 @@ public class LUdecomposition
         return new Matrix(newMatrix);
     }
 
-    public Matrix solve(Matrix b)
+    //Uses backward and forward substitution to solve a factored system
+    public Matrix solve(Matrix inputMatrix)
     {
-    	return Substitution.backwardSubstitution(upperTriangle,Substitution.forwardSubstitution(lowerTriangle,b));
+        return
+            Substitution.backwardSubstitution(upperTriangle,Substitution.forwardSubstitution(lowerTriangle,inputMatrix));
     }
 
+    //Simple function to find the error in factorization for an already-factored matrix
     public double getError(Matrix inputMatrix)
     {
         return norm((lowerTriangle.times(upperTriangle)).subtract(inputMatrix));
     }
-    
-    public double norm(Matrix inputMatrix) 
+
+    //Simple function to find the norm of a input matrix
+    public double norm(Matrix inputMatrix)
     {
         double norm = 0;
         for (int i = 0; i<inputMatrix.getRows(); i++)
         {
-        	for (int j = 0; j<inputMatrix.getCols(); j++) 
+        	for (int j = 0; j<inputMatrix.getCols(); j++)
         	{
         		norm += inputMatrix.getElement(i,j) * inputMatrix.getElement(i,j);
         	}
