@@ -72,6 +72,7 @@ public class LUdecomposition
         }
     }
         
+    //Simple function to set a value in a matrix
     public Matrix set(Matrix inputMatrix, int i, int j, double x)
     {
     	double[][] newMatrix = new double[inputMatrix.getRows()][inputMatrix.getCols()];
@@ -89,16 +90,19 @@ public class LUdecomposition
         return new Matrix(newMatrix);
     }
 
-    public Matrix solve(Matrix b)
+    //Uses backward and forward substitution to solve a factored system
+    public Matrix solve(Matrix inputMatrix)
     {
-    	return Substitution.backwardSubstitution(upperTriangle,Substitution.forwardSubstitution(lowerTriangle,b));
+    	return Substitution.backwardSubstitution(upperTriangle,Substitution.forwardSubstitution(lowerTriangle,inputMatrix));
     }
 
-    public double getError()
+    //Simple function to find the error in factorization for an already-factored matrix
+    public double getError(Matrix inputMatrix)
     {
         return norm((lowerTriangle.times(upperTriangle)).subtract(inputMatrix));
     }
     
+    //Simple function to find the norm of a input matrix
     public double norm(Matrix inputMatrix) 
     {
         double norm = 0;
