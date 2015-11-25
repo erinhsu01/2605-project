@@ -82,17 +82,31 @@ public class Part1 /*extends Application*/ {
             Matrix pascal = Matrix.pascalMatrix(i);
             ArrayList<Object> list = lu_fact(pascal);
             lu[i-2][0] = i;
-            lu[i-2][1] = solve(createB(i), (Matrix) list.get(0), (Matrix) list.get(1));
+            lu[i-2][1] = solve_lu_b(createB(i), (Matrix) list.get(0), (Matrix) list.get(1));
             lu[i-2][2] = (double) list.get(2); //Gets Error
         }
         Matrix luMatrix = new Matrix(lu);
 
-        System.out.println("LU Matrix Factoriation:");
+        System.out.println("LU Matrix Factorization:");
+        System.out.println("N   Solution    Error");
         System.out.println(luMatrix);
 
-        System.out.println("QR Matrix Factoriation using Householder:");
+        double[][] qrhouse = new double[11][3];
+        for (int i = 2; i < 13; i++) {
+            Matrix pascal = Matrix.pascalMatrix(i);
+
+            lu[i-2][0] = i;
+            //lu[i-2][1] =
+            //lu[i-2][2] = ; //Gets Error
+        }
+        Matrix qrHouseMatrix = new Matrix(qrhouse);
+
+        System.out.println("QR Matrix Factorization using Householder:");
+        System.out.println("N   Solution    Error");
+        System.out.println(qrHouseMatrix);
 
         System.out.println("LU Matrix Factoriation using Givens:");
+        System.out.println("N   Solution    Error");
 
         //launch(args);
     }

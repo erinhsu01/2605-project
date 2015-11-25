@@ -98,7 +98,7 @@ public class LUdecomposition
     }
 
     //Uses backward and forward substitution to solve a factored system
-    public static Matrix solve(Matrix inputMatrix, Matrix upperTriangle, Matrix lowerTriangle)
+    public static Matrix solve_lu_b(Matrix inputMatrix, Matrix upperTriangle, Matrix lowerTriangle)
     {
         return
             Substitution.backwardSubstitution(upperTriangle,Substitution.forwardSubstitution(lowerTriangle,inputMatrix));
