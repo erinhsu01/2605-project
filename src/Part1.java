@@ -9,14 +9,14 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
-//import java.util.ArrayList;
+import java.util.ArrayList;
 //import java.util.Random;
 
-public class Part1 extends Application {
+public class Part1 /*extends Application*/ {
 
-    @Override
+    /*@Override
     public void start(Stage stage) {
-        /*Group root = new Group();
+        Group root = new Group();
         ArrayList<ArrayList<Object>> matrices1000 = generate1000Matrices();
 
         stage.setTitle("Graphs");
@@ -68,8 +68,8 @@ public class Part1 extends Application {
         hBox1.getChildren().addAll(scatterchart, scatterchart2);
         ((Group)scene.getRoot()).getChildren().add(hBox1);
         stage.setScene(scene);
-        stage.show();*/
-    }
+        stage.show();
+    }*/
 
     public void show() {
 
@@ -77,27 +77,33 @@ public class Part1 extends Application {
 
     public static void main(String[] args) {
 
-        double[][] lu = new double[][];
+        double[][] lu = new double[11][3];
         for (int i = 2; i < 13; i++) {
-            double[i-2][0] = i;
+            Matrix pascal = Matrix.pascalMatrix(i);
+            ArrayList<Object> list = lu_fact(pascal);
+            lu[i-2][0] = i;
+            lu[i-2][1] = solve(createB(i), (Matrix) list.get(0), (Matrix) list.get(1));
+            lu[i-2][2] = (double) list.get(2); //Gets Error
         }
+        Matrix luMatrix = new Matrix(lu);
 
         System.out.println("LU Matrix Factoriation:");
+        System.out.println(luMatrix);
+
         System.out.println("QR Matrix Factoriation using Householder:");
+
         System.out.println("LU Matrix Factoriation using Givens:");
 
-        launch(args);
+        //launch(args);
     }
 
-    public Matrix pascalMatrix(int n) {
-        double[][] pascal = new double[n][n];
-        for (int i = 0; i < n; i++) {
-            pascall[0][i] = 1;
-            pascal[i][0] = 1;
-        } for (int i = 1; i < n; i++) {
-            for (int j = 1; j < n; j++) {
-                pascal[i][j] = [i][j-1] +
-            }
-
+    public static Matrix createB(int n) {
+        double[] bArray = new double[n];
+        for (int i = 1; i <= n; i++) {
+            bArray[i - 1] = 1/i;
         }
+        Vector b = new Vector(bArray);
+        return b.toMatrix();
     }
+
+}

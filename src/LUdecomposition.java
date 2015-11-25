@@ -8,7 +8,7 @@ public class LUdecomposition
     Matrix upperTriangle;
     Matrix lowerTriangle;
 
-    public ArrayList<Object> lu_fact(Matrix inputMatrix)
+    public static ArrayList<Object> lu_fact(Matrix inputMatrix)
     {
     	LinkedList<Matrix> factorList = new LinkedList<Matrix>();
         double [][]original = inputMatrix.getElements();
@@ -98,7 +98,7 @@ public class LUdecomposition
     }
 
     //Uses backward and forward substitution to solve a factored system
-    public Matrix solve(Matrix inputMatrix)
+    public static Matrix solve(Matrix inputMatrix, Matrix upperTriangle, Matrix lowerTriangle)
     {
         return
             Substitution.backwardSubstitution(upperTriangle,Substitution.forwardSubstitution(lowerTriangle,inputMatrix));
