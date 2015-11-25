@@ -3,8 +3,8 @@
 
 public class solve_qr_b 
 {
-    double[] diagonal;
-    Matrix QRmatrix;
+    static double[] diagonal;
+    static Matrix QRmatrix;
 
     //Simple function to turn a double array into a matrix
     public double[][] getArrayCopy(Matrix inputMatrix)
@@ -128,7 +128,7 @@ public class solve_qr_b
         return qMatrix;
     }
 
-    public Matrix getRMatrix(Matrix inputMatrix) 
+    public static Matrix getRMatrix(Matrix inputMatrix) 
     {
         //This function creates an R matrix, where every variable is set by using the factored QRmatrix.
         Matrix rMatrix = new Matrix(inputMatrix.getRows(),inputMatrix.getCols());
@@ -226,9 +226,9 @@ public class solve_qr_b
         }
         //This turns the coefficient and constant array matrices into Matrix objects, then uses backward substitution to solve
         
-        //Following section is broken with some impovements to the QR code, requires fixing
-      //  GivensQR qrA = new GivensQR(new Matrix(coefficientMatrix));
-    //    Matrix qrB = qrA.Q.transpose().times(new Matrix(constantMatrix));
-        return inputMatrix;// Substitution.backwardSubstitution(qrA.R, qrB);
+        //Following section is broken with some improvements to the QR code, requires fixing
+        Matrix qrA = getRMatrix(coefficientMatrix);
+        Matrix qrB = qrA.transpose().times(constantMatrix);
+        return Substitution.backwardSubstitution(qrA, qrB);
     }
 }
