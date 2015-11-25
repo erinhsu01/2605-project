@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 public class LUdecomposition
 {
-    Matrix upperTriangle;
-    Matrix lowerTriangle;
+    private static Matrix upperTriangle;
+    private static Matrix lowerTriangle;
 
     public static ArrayList<Object> lu_fact(Matrix inputMatrix)
     {
@@ -80,7 +80,7 @@ public class LUdecomposition
         return ret;
     }
 
-    public Matrix set(Matrix inputMatrix, int i, int j, double x)
+    public static Matrix set(Matrix inputMatrix, int i, int j, double x)
     {
     	double[][] newMatrix = new double[inputMatrix.getRows()][inputMatrix.getCols()];
         for(int row = 0; row < inputMatrix.getRows(); row++)
@@ -105,13 +105,13 @@ public class LUdecomposition
     }
 
     //Simple function to find the error in factorization for an already-factored matrix
-    public double getError(Matrix inputMatrix)
+    public static double getError(Matrix inputMatrix)
     {
         return norm((lowerTriangle.times(upperTriangle)).subtract(inputMatrix));
     }
 
     //Simple function to find the norm of a input matrix
-    public double norm(Matrix inputMatrix)
+    public static double norm(Matrix inputMatrix)
     {
         double norm = 0;
         for (int i = 0; i<inputMatrix.getRows(); i++)

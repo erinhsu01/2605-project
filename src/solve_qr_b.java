@@ -83,7 +83,7 @@ public class solve_qr_b
 
     }
 
-    public Matrix getQMatrix(Matrix inputMatrix)
+    public static Matrix getQMatrix(Matrix inputMatrix)
     {
         //This function takes in the factored QR matrix as a basis of factoring out the Q matrix
         Matrix qMatrix = new Matrix(inputMatrix.getRows(),inputMatrix.getCols());
@@ -152,7 +152,7 @@ public class solve_qr_b
         return rMatrix;
     }
 
-    public Matrix houseSolve(Matrix inputMatrix)
+    public static Matrix houseSolve(Matrix inputMatrix)
     {
     	//The matrix is first broken into an A and B matrices, for the ensuing Ax=B calculation
     	//The A coefficient matrix is the same matrix, minus the rightmost column
@@ -183,19 +183,22 @@ public class solve_qr_b
     //Simple function to set a value in a matrix
     public static Matrix set(Matrix inputMatrix, int i, int j, double x)
     {
-    	Matrix newMatrix = new Matrix(inputMatrix.getRows(),inputMatrix.getCols());
-        for(int row = 0; row < inputMatrix.getRows(); row++)
-        {
-        	for(int col = 0; col < inputMatrix.getCols(); col++)
-        	{
-        		if(row == i && col == j)
-        		{
-        			newMatrix = set(newMatrix,row,col,x);
-        		}
-        		else newMatrix = set(newMatrix,row,col,inputMatrix.getElement(row, col));
-        	}
-        }
-        return newMatrix;
+//    	Matrix newMatrix = new Matrix(inputMatrix.getRows(),inputMatrix.getCols());
+        double[][] m = inputMatrix.getElements();
+        m[i][j] = x;
+//        for(int row = 0; row < inputMatrix.getRows(); row++)
+//        {
+//        	for(int col = 0; col < inputMatrix.getCols(); col++)
+//        	{
+//        		if(row == i && col == j)
+//        		{
+//        			newMatrix = set(newMatrix,row,col,x);
+//        		}
+//        		else newMatrix = set(newMatrix,row,col,inputMatrix.getElement(row, col));
+//        	}
+//        }
+//        return newMatrix;
+        return new Matrix(m);
     }
 
 
@@ -232,11 +235,11 @@ public class solve_qr_b
         return Substitution.backwardSubstitution(qrA, qrB);
     }
 
-    public double getQRError(Matrix inputMatrix) {
+    public static double getQRError(Matrix inputMatrix) {
         return normQR(getQMatrix(inputMatrix).times(getRMatrix(inputMatrix)).subtract(inputMatrix));
     }
 
-    public double normQR(Matrix inputMatrix)
+    public static double normQR(Matrix inputMatrix)
     {
         double norm = 0;
         for (int i = 0; i<inputMatrix.getRows(); i++)
