@@ -1,6 +1,7 @@
 // Chad Gerhard, Erin Hsu, Michael Sharpe
 // 2605 Project 11/24/15
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 public class LUdecomposition
 {
@@ -108,9 +109,6 @@ public class LUdecomposition
     {
         return norm((lowerTriangle.times(upperTriangle)).subtract(inputMatrix));
     }
-
-    public double norm(Matrix inputMatrix)
-
 
     //Simple function to find the norm of a input matrix
     public double norm(Matrix inputMatrix)
