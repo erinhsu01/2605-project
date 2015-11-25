@@ -354,13 +354,13 @@ public class Part2 extends Application {
                         gs.getValue()));
 
                 // adding to the scatter chart
-                double jDifference = j.getKey().minus(exactVector).magnitude();
+                double jDifference = v.minus(exactVector).magnitude();
                 XYChart.Data<Number, Number> jData = new XYChart.Data<>(jDifference, j.getValue());
                 Circle jPoint = new Circle(4, Color.BLUE);
                 jPoint.setStroke(Color.BLACK);
                 jData.setNode(jPoint);
                 jacobiSeries.getData().add(jData);
-                double gsDifference = gs.getKey().minus(exactVector).magnitude();
+                double gsDifference = v.minus(exactVector).magnitude();
                 XYChart.Data<Number, Number> gsData = new XYChart.Data<>(gsDifference, gs.getValue());
                 Circle gsPoint = new Circle(4, Color.BLACK);
                 gsPoint.setStroke(Color.RED);

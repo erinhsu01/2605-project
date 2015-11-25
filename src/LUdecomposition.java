@@ -94,7 +94,7 @@ public class LUdecomposition
     	return Substitution.backwardSubstitution(upperTriangle,Substitution.forwardSubstitution(lowerTriangle,b));
     }
 
-    public double getError()
+    public double getError(Matrix inputMatrix)
     {
         return norm((lowerTriangle.times(upperTriangle)).subtract(inputMatrix));
     }

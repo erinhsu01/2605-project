@@ -79,7 +79,7 @@ public class Matrix {
      * @return identity matrix
      */
     public static Matrix identityMatrix(int n) {
-        if (n == 0) {
+        if (n <= 0) {
             throw new java.lang.IllegalArgumentException("Identity matrix" +
                     " does not exist in this dimension");
         }
@@ -88,6 +88,30 @@ public class Matrix {
             id[i][i] = 1;
         }
         return new Matrix(id);
+    }
+
+    public static Matrix pascalMatrix(int n) {
+        if (n <= 0) {
+            throw new java.lang.IllegalArgumentException("Pascal matrix" +
+                    " does not exist in this dimension");
+        }
+        double[][] p = new double[n][n];
+
+        // fill in edges with ones first
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                p[0][j] = 1;
+                p[j][0] = 1;
+            }
+        }
+
+        // fill in submatrix after
+        for (int i = 1; i < n; i++) {
+            for (int j = 1; j < n; j++) {
+                p[i][j] = p[i - 1][j] + p[i][j - 1];
+            }
+        }
+        return new Matrix(p);
     }
 
     // ---------------------- END CONSTRUCTORS ----------------------
@@ -293,7 +317,6 @@ public class Matrix {
 
     /**
      * Calculates the determinant of this matrix
-     * @param m a matrix to find the determinant of
      * @return the determinant of this matrix
      */
     public double determinant() {
