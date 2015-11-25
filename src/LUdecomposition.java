@@ -71,6 +71,12 @@ public class LUdecomposition
         		}
         	}
         }
+        ArrayList<Object> ret = new ArrayList<>();
+        ret.add(upperTriangle);
+        ret.add(lowerTriangle);
+        double error = getError(inputMatrix);
+        ret.add(error);
+        return ret;
     }
 
     public Matrix set(Matrix inputMatrix, int i, int j, double x)
@@ -93,12 +99,8 @@ public class LUdecomposition
     //Uses backward and forward substitution to solve a factored system
     public Matrix solve(Matrix inputMatrix)
     {
-    	return
-            Substitution.backwardSubstitution(upperTriangle,Substitution.forwardSubstitution(lowerTriangle,b));
-    }
-
-
-    	return Substitution.backwardSubstitution(upperTriangle,Substitution.forwardSubstitution(lowerTriangle,inputMatrix));
+        return
+            Substitution.backwardSubstitution(upperTriangle,Substitution.forwardSubstitution(lowerTriangle,inputMatrix));
     }
 
     //Simple function to find the error in factorization for an already-factored matrix
